@@ -65,6 +65,12 @@ function submitPin() {
         authPass = "gloss" + currentPin; // Ej: gloss5678
     }
 
+    if (!window.supabaseClient) {
+        setLoading(false);
+        errorMsg.textContent = "El sistema se está conectando. Intente en un segundo...";
+        return;
+    }
+
     // Usamos el cliente global de Supabase cargado en recepcionDashboard
     window.supabaseClient.auth.signInWithPassword({
         email: authEmail,

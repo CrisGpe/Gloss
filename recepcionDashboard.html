@@ -371,20 +371,22 @@
     <?!= include('gestionNoModalVentasCajaJS'); ?>
     <?!= include('onLoadJS.html'); ?>
 
-    <!-- Supabase JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase JS (Carga Segura Asíncrona) -->
     <script>
-      console.log("CLIENT DEBUG: Inicializando Supabase JS...");
       window.SUPABASE_URL = "<?= supabaseUrl ?>";
       window.SUPABASE_KEY = "<?= supabaseKey ?>";
       
-      if (typeof supabase !== 'undefined') {
-          window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-          console.log("CLIENT DEBUG: Supabase JS Cliente Creado Exitosamente.");
-      } else {
-          console.error("CRÍTICO: CDN de Supabase falló al cargar.");
+      function inicializarClienteSupabase() {
+          console.log("CLIENT DEBUG: CDN Cargado. Inicializando Supabase JS...");
+          if (typeof supabase !== 'undefined') {
+              window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+              console.log("CLIENT DEBUG: Supabase JS Cliente Creado Exitosamente.");
+          } else {
+              console.error("CRÍTICO: CDN de Supabase falló al cargar.");
+          }
       }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="inicializarClienteSupabase()"></script>
 
     <?!= include('relojJS'); ?>
     <?!= include('citasSupabaseJS'); ?>
