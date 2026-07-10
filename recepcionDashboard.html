@@ -371,28 +371,29 @@
     <?!= include('gestionNoModalVentasCajaJS'); ?>
     <?!= include('onLoadJS.html'); ?>
 
-    <!-- Supabase JS (Carga Segura Asíncrona Dinámica) -->
+    <!-- Supabase JS (Carga Segura con Polling) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       window.SUPABASE_URL = "<?= supabaseUrl ?>";
       window.SUPABASE_KEY = "<?= supabaseKey ?>";
       
-      (function() {
-          var script = document.createElement('script');
-          script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-          script.onload = function() {
-              console.log("CLIENT DEBUG: CDN Cargado. Inicializando Supabase JS...");
-              if (typeof supabase !== 'undefined') {
-                  window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-                  console.log("CLIENT DEBUG: Supabase JS Cliente Creado Exitosamente.");
-              } else {
-                  console.error("CRÍTICO: supabase is undefined.");
+      console.log("CLIENT DEBUG: Esperando a que el CDN de Supabase termine de cargar...");
+      
+      // Polling para detectar cuando Supabase esté listo, evadiendo los bloqueos de onload en GAS
+      var intentosSupabase = 0;
+      var supabaseCheckInterval = setInterval(function() {
+          if (typeof supabase !== 'undefined') {
+              clearInterval(supabaseCheckInterval);
+              window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+              console.log("CLIENT DEBUG: Supabase JS Cliente Creado Exitosamente.");
+          } else {
+              intentosSupabase++;
+              if (intentosSupabase > 100) { // Timeout después de 10 segundos
+                  clearInterval(supabaseCheckInterval);
+                  console.error("CRÍTICO: Tiempo de espera agotado para el CDN de Supabase.");
               }
-          };
-          script.onerror = function() {
-              console.error("CRÍTICO: Error de red al cargar CDN Supabase.");
-          };
-          document.head.appendChild(script);
-      })();
+          }
+      }, 100);
     </script>
 
     <?!= include('relojJS'); ?>
