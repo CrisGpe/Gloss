@@ -64,16 +64,15 @@ function submitPin() {
                 document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;"><div class="spinner-border text-light mb-3" role="status"></div><h3 style="color:white">Cargando Dashboard...</h3></div>';
                 
                 google.script.run
-                    .withSuccessHandler(function(htmlContent) {
-                        document.open();
-                        document.write(htmlContent);
-                        document.close();
+                    .withSuccessHandler(function(url) {
+                        // Redirigimos pasandole el rol y el token a la URL original de la WebApp
+                        window.top.location.href = url + "?p=" + response.rol + "&token=" + response.token;
                     })
                     .withFailureHandler(function(error) {
-                        alert("Error cargando dashboard: " + error);
+                        alert("Error obteniendo URL: " + error);
                         window.location.reload();
                     })
-                    .getDashboardHtml('recepcion');
+                    .getScriptUrl();
                     
             } else {
                 setLoading(false);

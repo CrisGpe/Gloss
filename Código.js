@@ -5,9 +5,27 @@ function doGet(e) {
   let title = 'Antigravity Salon - Login Seguro';
   
   const param = e && e.parameter && e.parameter.p ? e.parameter.p.toLowerCase() : '';
+  const token = e && e.parameter && e.parameter.token ? e.parameter.token : '';
   
-  // Opcional: si quisieran enrutar directo desde URL con un token en el futuro,
-  // por ahora forzamos siempre el login.
+  // Enrutamiento si el usuario viene con un token válido desde el login
+  if (token !== '') {
+    if (param === 'caja') {
+      page = 'cajaDashboard';
+      title = 'Dashboard Caja - Antigravity Salon';
+    } else if (param === 'insumos') {
+      page = 'despachoInsumos';
+      title = 'Inventario & Despacho Insumos - Antigravity Salon';
+    } else if (param === 'reportes') {
+      page = 'reportesDashboard';
+      title = 'Reportes & Estadísticas - Antigravity Salon';
+    } else if (param === 'recepcion' || param === 'desarrollador') {
+      page = 'recepcionDashboard';
+      title = 'Dashboard Recepción - Antigravity Salon';
+    } else {
+      page = 'recepcionDashboard'; // Default fallback si hay token
+      title = 'Dashboard Recepción - Antigravity Salon';
+    }
+  }
 
   try {
     const htmlTemplate = HtmlService.createTemplateFromFile(page);
@@ -30,6 +48,13 @@ function doGet(e) {
       </html>
     `).setTitle("Error de Servidor").setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
+}
+
+/**
+ * Devuelve la URL pública del Script para redirecciones
+ */
+function getScriptUrl() {
+  return ScriptApp.getService().getUrl();
 }
 
 /**
