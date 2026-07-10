@@ -1,29 +1,15 @@
 function obtenerCitasRegistradasEnAdelante() {
-  const libro = SpreadsheetApp.openById("1SXuedQigLxVUF2oxn65wEZ5-HnDDiVdy7lY7HaweVC4");
-  const hojaCitas = libro.getSheetByName("Registro Citas"); 
+  const hoy = new Date();
+  const hoyISO = Utilities.formatDate(hoy, "America/Lima", "yyyy-MM-dd");
   
-  // --- DEBUG: IDENTIFICACIÓN DE COLUMNAS ---
-  const encabezados = hojaCitas.getRange(1, 1, 1, 7).getValues()[0];
-  console.log("DEBUG(Servidor): Encabezados detectados:", encabezados);
-  // Se espera: [A:Timestamp, B:Fecha, C:Hora, D:Cliente, E:TipoCliente, F:Agente, G:Servicio]
+  // Consultamos citas de Supabase de hoy en adelante
+  const queryStr = `fecha=gte.${hoyISO}&order=fecha.asc,hora.asc`;
+  const citas = Supabase.select("registro_citas", queryStr);
   
-  const hoySinHora = new Date();
-  hoySinHora.setHours(0, 0, 0, 0); 
-
-  const ultimaFilaGlobal = hojaCitas.getLastRow();
-  if (ultimaFilaGlobal < 2) {
-    console.log("DEBUG(Servidor): La hoja está vacía o solo tiene encabezados.");
+  if (!citas || citas.error || !Array.isArray(citas) || citas.length === 0) {
     return [];
   }
 
-  const datosCitas = hojaCitas.getRange(2, 1, ultimaFilaGlobal - 1, 7).getValues();
-  const datosCitasDisplay = hojaCitas.getRange(2, 1, ultimaFilaGlobal - 1, 7).getDisplayValues();
-
-  console.log("DEBUG(Servidor): Total filas leídas:", datosCitas.length);
-  if (datosCitas.length > 0) {
-    console.log("DEBUG(Servidor): Ejemplo Fila 2 (Valores Reales):", datosCitas[0]);
-    console.log("DEBUG(Servidor): Ejemplo Fila 2 (Display Values):", datosCitasDisplay[0]);
-  }
 
   // 1. Filtramos las citas que son de hoy en adelante
   const citasFiltradas = [];

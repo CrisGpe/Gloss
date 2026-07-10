@@ -1,0 +1,91 @@
+<script>
+let currentPin = '';
+const maxPinLength = 4;
+const dots = document.querySelectorAll('.pin-dot');
+const errorMsg = document.getElementById('errorMessage');
+const btnSubmit = document.getElementById('btnSubmit');
+const submitIcon = document.getElementById('submitIcon');
+const loadingSpinner = document.getElementById('loadingSpinner');
+
+function updateDots() {
+    dots.forEach((dot, index) => {
+        if (index < currentPin.length) {
+            dot.classList.add('filled');
+        } else {
+            dot.classList.remove('filled');
+        }
+    });
+}
+
+function addPin(num) {
+    if (currentPin.length < maxPinLength) {
+        currentPin += num;
+        updateDots();
+        errorMsg.textContent = '';
+        if(currentPin.length === maxPinLength) {
+            submitPin();
+        }
+    }
+}
+
+function clearPin() {
+    currentPin = '';
+    updateDots();
+    errorMsg.textContent = '';
+}
+
+function setLoading(isLoading) {
+    if (isLoading) {
+        submitIcon.style.display = 'none';
+        loadingSpinner.style.display = 'inline-block';
+        btnSubmit.disabled = true;
+    } else {
+        submitIcon.style.display = 'inline-block';
+        loadingSpinner.style.display = 'none';
+        btnSubmit.disabled = false;
+    }
+}
+
+function submitPin() {
+    if (currentPin.length === 0) return;
+    
+    setLoading(true);
+    errorMsg.textContent = '';
+    
+    google.script.run
+        .withSuccessHandler(function(response) {
+            if (response && response.success) {
+                // Autenticado correctamente
+                sessionStorage.setItem("userRole", response.rol);
+                sessionStorage.setItem("userName", response.nombre);
+                sessionStorage.setItem("userToken", response.token);
+                
+                // Cargar el dashboard (podría ser recepcionDashboard según su rol, por defecto pasaremos 'recepcion')
+                document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;"><div class="spinner-border text-light mb-3" role="status"></div><h3 style="color:white">Cargando Dashboard...</h3></div>';
+                
+                google.script.run
+                    .withSuccessHandler(function(htmlContent) {
+                        document.open();
+                        document.write(htmlContent);
+                        document.close();
+                    })
+                    .withFailureHandler(function(error) {
+                        alert("Error cargando dashboard: " + error);
+                        window.location.reload();
+                    })
+                    .getDashboardHtml('recepcion');
+                    
+            } else {
+                setLoading(false);
+                errorMsg.textContent = response.message || 'PIN Incorrecto';
+                clearPin();
+            }
+        })
+        .withFailureHandler(function(error) {
+            setLoading(false);
+            errorMsg.textContent = 'Error de conexión: ' + error;
+            clearPin();
+        })
+        .verificarPinUsuario(currentPin);
+}
+</script>

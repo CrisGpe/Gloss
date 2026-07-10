@@ -1078,4 +1078,91 @@ body.dark-theme .table-header-title {
 body.dark-theme .label-header-display {
   color: #e2e8f0 !important; /* High contrast light color in dark theme */
 }
+/* ==========================================================================
+   THEME OVERRIDES
+   ========================================================================== */
+
+/* PREMIUM (Default) */
+[data-theme="premium"] body {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+  color: #f8fafc;
+}
+[data-theme="premium"] .modern-card {
+  background: rgba(255,255,255,0.05) !important;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #f8fafc;
+}
+[data-theme="premium"] .card-title-custom, [data-theme="premium"] .table-header-container, [data-theme="premium"] .card-header-flex {
+  background: rgba(0,0,0,0.3) !important;
+  color: #a78bfa !important;
+  border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+}
+[data-theme="premium"] .table { color: #f8fafc !important; }
+[data-theme="premium"] .table-hover tbody tr:hover { background: rgba(255,255,255,0.1) !important; }
+[data-theme="premium"] .navbar { background: rgba(0,0,0,0.5) !important; backdrop-filter: blur(10px); }
+
+/* ACARTONADA CHIC */
+[data-theme="acartonada"] body {
+  background: #e6d5c3 url('https://www.transparenttextures.com/patterns/cardboard.png') !important;
+  color: #4a3c31;
+  font-family: "Courier New", Courier, monospace !important;
+}
+[data-theme="acartonada"] .modern-card {
+  background: #fdfbf7 !important;
+  border: 2px dashed #b5a28c !important;
+  border-radius: 4px !important;
+  box-shadow: 5px 5px 0px #d4c4b7 !important;
+  color: #4a3c31;
+}
+[data-theme="acartonada"] .btn {
+  border-radius: 0 !important;
+  border: 2px solid #4a3c31 !important;
+  background: transparent !important;
+  color: #4a3c31 !important;
+  box-shadow: 2px 2px 0px #4a3c31 !important;
+  font-weight: bold;
+}
+[data-theme="acartonada"] .btn:active { box-shadow: 0 0 0 !important; transform: translate(2px, 2px); }
+[data-theme="acartonada"] .navbar, [data-theme="acartonada"] .card-title-custom, [data-theme="acartonada"] .table-header-container, [data-theme="acartonada"] .card-header-flex {
+  background: #d4c4b7 !important;
+  color: #4a3c31 !important;
+  border-bottom: 2px solid #b5a28c !important;
+}
+
+/* WINDOWS XP */
+[data-theme="xp"] body {
+  background: #004e98 !important;
+  font-family: Tahoma, "Trebuchet MS", sans-serif !important;
+  color: black;
+}
+[data-theme="xp"] .modern-card {
+  background: #ece9d8 !important;
+  border: 1px solid #ffffff !important;
+  border-right-color: #716f64 !important;
+  border-bottom-color: #716f64 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+[data-theme="xp"] .card-title-custom, [data-theme="xp"] .table-header-container, [data-theme="xp"] .card-header-flex {
+  background: linear-gradient(to right, #0058e6, #3a93ff, #0058e6) !important;
+  color: white !important;
+  text-shadow: 1px 1px #000;
+  border: none !important;
+  font-weight: bold;
+  padding: 4px 10px;
+}
+[data-theme="xp"] .btn {
+  background: linear-gradient(to bottom, #f3f3f3, #d7d7d7) !important;
+  border: 1px solid #003c74 !important;
+  border-radius: 3px !important;
+  color: black !important;
+  box-shadow: inset -1px -1px 2px rgba(0,0,0,0.2) !important;
+}
+[data-theme="xp"] .navbar {
+  background: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #245edb 92%, #333 100%) !important;
+  border-bottom: none !important;
+}
+[data-theme="xp"] .navbar-brand { color: white !important; font-style: italic; text-shadow: 1px 1px 2px black; }
+
 </style>

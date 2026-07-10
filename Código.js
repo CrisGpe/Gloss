@@ -1,24 +1,13 @@
 function doGet(e) {
   console.log("SERVER DEBUG: Iniciando enrutamiento de dashboards...");
   
-  let page = 'recepcionDashboard';
-  let title = 'Dashboard Recepción - Antigravity Salon';
+  let page = 'login';
+  let title = 'Antigravity Salon - Login Seguro';
   
   const param = e && e.parameter && e.parameter.p ? e.parameter.p.toLowerCase() : '';
   
-  if (param === 'caja') {
-    page = 'cajaDashboard';
-    title = 'Dashboard Caja - Antigravity Salon';
-  } else if (param === 'insumos') {
-    page = 'despachoInsumos';
-    title = 'Inventario & Despacho Insumos - Antigravity Salon';
-  } else if (param === 'reportes') {
-    page = 'reportesDashboard';
-    title = 'Reportes & Estadísticas - Antigravity Salon';
-  } else if (param === 'recepcion') {
-    page = 'recepcionDashboard';
-    title = 'Dashboard Recepción - Antigravity Salon';
-  }
+  // Opcional: si quisieran enrutar directo desde URL con un token en el futuro,
+  // por ahora forzamos siempre el login.
 
   try {
     const htmlTemplate = HtmlService.createTemplateFromFile(page);
@@ -36,11 +25,25 @@ function doGet(e) {
       <html>
         <body style="background: #0f172a; color: #f1f5f9; font-family: sans-serif; padding: 30px; text-align: center;">
           <h1 style="color: #ef4444;">Error Crítico del Servidor</h1>
-          <p>No se pudo cargar el Dashboard: ${err.message}</p>
+          <p>No se pudo cargar la vista inicial: ${err.message}</p>
         </body>
       </html>
     `).setTitle("Error de Servidor").setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
+}
+
+/**
+ * Función expuesta para cargar el Dashboard una vez autenticado
+ */
+function getDashboardHtml(rolePage) {
+  console.log("SERVER DEBUG: Cargando HTML para " + rolePage);
+  let page = 'recepcionDashboard';
+  if (rolePage === 'caja') page = 'cajaDashboard';
+  else if (rolePage === 'insumos') page = 'despachoInsumos';
+  else if (rolePage === 'reportes') page = 'reportesDashboard';
+  
+  const template = HtmlService.createTemplateFromFile(page);
+  return template.evaluate().getContent();
 }
 
 function include(filename) {
