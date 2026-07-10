@@ -60,25 +60,17 @@ function submitPin() {
                 sessionStorage.setItem("userName", response.nombre);
                 sessionStorage.setItem("userToken", response.token);
                 
-                // Cargar el dashboard (podría ser recepcionDashboard según su rol, por defecto pasaremos 'recepcion')
-                document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;"><div class="spinner-border text-light mb-3" role="status"></div><h3 style="color:white">Cargando Dashboard...</h3></div>';
+                // Cargar el dashboard SPA
+                setLoading(false);
+                const loginWall = document.getElementById('loginWall');
+                const appWall = document.getElementById('appWall');
+                if(loginWall) loginWall.style.display = 'none';
+                if(appWall) appWall.style.display = 'block';
                 
-                google.script.run
-                    .withSuccessHandler(function(url) {
-                        // Hack para Google Apps Script: Crear un enlace invisible y clickearlo 
-                        // para evitar el error de "dropping postMessage" / CORS.
-                        const redirectUrl = url + "?p=" + response.rol + "&token=" + response.token;
-                        const link = document.createElement('a');
-                        link.href = redirectUrl;
-                        link.target = '_top';
-                        document.body.appendChild(link);
-                        link.click();
-                    })
-                    .withFailureHandler(function(error) {
-                        alert("Error obteniendo URL: " + error);
-                        window.location.reload();
-                    })
-                    .getScriptUrl();
+                // Inicializar el dashboard manualmente
+                if (typeof inicializarDashboardTotal === 'function') {
+                    inicializarDashboardTotal();
+                }
                     
             } else {
                 setLoading(false);

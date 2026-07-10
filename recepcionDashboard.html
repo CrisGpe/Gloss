@@ -16,8 +16,15 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/es.js'></script>
   </head>
   <body>
+    <!-- SPA LOGIN WALL -->
+    <div id="loginWall" style="position:fixed; top:0; left:0; width:100%; height:100vh; z-index:999999; background: #0f172a;">
+      <?!= include('login'); ?>
+    </div>
+
+    <!-- SPA APP WALL (Oculto hasta hacer login) -->
+    <div id="appWall" style="display:none;">
+    
     <script>
-      window.addEventListener('error', function(e) {
         console.error("DASHBOARD CRITICAL RUNTIME ERROR:", e.error);
         if (window.Swal) {
           Swal.fire({
@@ -30,6 +37,7 @@
           alert("ERROR EN DASHBOARD:\n" + e.message + "\nArchivo: " + e.filename + "\nLínea: " + e.lineno);
         }
       });
+      // window.onload was moved up or removed, we will manually call inicializarDashboardTotal in loginJS
     </script>
     
     <div id="loading-overlay">
@@ -375,5 +383,5 @@
     <?!= include('gestionNoModalVentasCajaJS'); ?>
     <?!= include('onLoadJS.html'); ?>
 
-  </body>
+  </div></body>
 </html>
