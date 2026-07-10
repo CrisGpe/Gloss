@@ -58,7 +58,7 @@
     #loadingSpinner { display: none; color: #a78bfa; }
 </style>
 
-<div class="login-container-bg">
+<div class="login-container-bg" id="supabase-config-login" data-url="<?= typeof supabaseUrl !== 'undefined' ? supabaseUrl : '' ?>" data-key="<?= typeof supabaseKey !== 'undefined' ? supabaseKey : '' ?>">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="login-glass-card">

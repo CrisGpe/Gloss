@@ -66,8 +66,9 @@ async function submitPin() {
         authPass = "gloss" + currentPin; 
     }
 
-    // Leer variables inyectadas en el HTML principal (seguro contra Sandbox)
-    const configDiv = document.getElementById('supabase-config');
+    // Leer variables inyectadas DIRECTAMENTE en el contenedor del login (infalible)
+    const configDiv = document.getElementById('supabase-config-login');
+    console.error("DEBUG DIV CONFIG LOGIN:", configDiv);
     const supaUrl = configDiv ? configDiv.dataset.url : null;
     const supaKey = configDiv ? configDiv.dataset.key : null;
 

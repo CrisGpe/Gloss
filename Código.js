@@ -85,9 +85,11 @@ function include(filename) {
   const cleanFilename = filename.replace(/\.html$/, '');
   try {
     console.log("SERVER DEBUG: Incluyendo sub-plantilla:", cleanFilename);
-    return HtmlService
-      .createHtmlOutputFromFile(cleanFilename)
-      .getContent();
+    const template = HtmlService.createTemplateFromFile(cleanFilename);
+    // Inyectamos las credenciales para que las subplantillas también las tengan
+    template.supabaseUrl = "https://jkwlvexclifwdpnzshpt.supabase.co";
+    template.supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imprd2x2ZXhjbGlmd2RwbnpzaHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNjg1ODQsImV4cCI6MjA5NTY0NDU4NH0.2cYEomsvL5YoV9mvnaxvZj-CBn43sO_S1flfhE7pZLo";
+    return template.evaluate().getContent();
   } catch (err) {
     console.error("SERVER DEBUG: Error al incluir sub-plantilla '" + filename + "' (limpio: '" + cleanFilename + "'): " + err.message);
     return `/* ERROR INCLUYENDO ${filename}: ${err.message} */`;
