@@ -369,20 +369,7 @@
     <?!= include('onLoadJS.html'); ?>
 
     <!-- Supabase JS Initialization -->
-    <script>
-      console.error("CLIENT DEBUG STEP 1: Evaluando variables del servidor...");
-      window.SUPABASE_URL = "<?= supabaseUrl ?>";
-      window.SUPABASE_KEY = "<?= supabaseKey ?>";
-      
-      console.error("CLIENT DEBUG STEP 2: Inicializando cliente...");
-      if (window.supabase) {
-          window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-          console.error("CLIENT DEBUG SUCCESS: Supabase JS Cliente Creado Exitosamente.");
-      } else {
-          console.error("CRÍTICO: window.supabase is undefined.");
-          alert("ERROR CRÍTICO: No se pudo cargar Supabase desde el CDN en el HEAD.");
-      }
-    </script>
+    <?!= include('initSupabaseJS'); ?>
 
     <?!= include('relojJS'); ?>
     <?!= include('citasSupabaseJS'); ?>

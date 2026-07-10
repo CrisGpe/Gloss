@@ -1,5 +1,7 @@
 <script>
 console.error("💥 LOGINJS ROOT LEVEL LOG: Si ves esto, NO estás en caché. (Timestamp: " + Date.now() + ")");
+console.error("💥 STATUS DE SUPABASE GLOBAL AL CARGAR LOGINJS:", window.supabase);
+console.error("💥 STATUS DE CLIENTE SUPABASE AL CARGAR LOGINJS:", window.supabaseClient);
 let currentPin = '';
 const maxPinLength = 4;
 const dots = document.querySelectorAll('.pin-dot');

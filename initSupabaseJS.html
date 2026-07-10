@@ -1,0 +1,13 @@
+<script>
+  console.error("CLIENT DEBUG STEP 1: Supabase init file loaded!");
+  window.SUPABASE_URL = "<?= supabaseUrl ?>";
+  window.SUPABASE_KEY = "<?= supabaseKey ?>";
+  
+  console.error("CLIENT DEBUG STEP 2: Inicializando cliente...", window.supabase);
+  if (window.supabase) {
+      window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+      console.error("CLIENT DEBUG SUCCESS: Supabase JS Cliente Creado Exitosamente.");
+  } else {
+      console.error("CRÍTICO: window.supabase is undefined. El CDN no cargó.");
+  }
+</script>
