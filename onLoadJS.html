@@ -47,47 +47,10 @@ window.filtroOATCActivo = 'Pendientes';
         // Gestión de Órdenes (OATC)
         "btnRegistrarOATC": activarRegistrarOATC,
         "btnFiltrarViewCitasHoy": () => {
-            mostrarCargando();
-            google.script.run
-              .withSuccessHandler(citas => {
-                ocultarCargando();
-                const tbody = document.getElementById('bodyGestionCitas');
-                tbody.innerHTML = '';
-
-                if (citas.length === 0) {
-                  tbody.innerHTML = '<tr><td colspan="5" class="text-center">No hay citas próximas.</td></tr>';
-                } else {
-                    tbody.innerHTML = ''; // Limpiar antes de llenar
-                    citas.forEach((cita) => {
-                        tbody.innerHTML += `
-                        <tr>
-                          <td>
-                              <div class="small fw-bold">${cita[5]}</div>
-                              <div class="small text-muted">${cita[1]}</div>
-                          </td>
-                          
-                          <td>${cita[2]}</td>
-                          
-                          <td><span class="badge bg-info text-dark">${cita[3]}</span></td>
-                          
-                          <td>${cita[4]}</td>
-                          
-                          <td class="text-center">
-                              <button class="btn btn-sm btn-outline-primary" onclick="window.editarCita(${cita[0]})">
-                                  <i class="fas fa-edit"></i>
-                              </button>
-                              <button class="btn btn-sm btn-outline-danger" onclick="window.eliminarCita(${cita[0]})">
-                                  <i class="fas fa-trash"></i>
-                              </button>
-                          </td>
-                        </tr>`;
-                  });
-                }
-                const modal = new bootstrap.Modal(document.getElementById('modalListadoCitas'));
-                modal.show();
-              })
-              .obtenerCitasRegistradasEnAdelante();
-          },
+            if (window.filtrarViewCitasHoy) {
+                window.filtrarViewCitasHoy();
+            }
+        },
         "btnFiltrarViewPendientes": () => { mostrarCargando(); window.filtrarViewOATCPendientes(); },
         "btnFiltrarViewTodas": () => { mostrarCargando(); window.filtrarViewTodas(); },
         

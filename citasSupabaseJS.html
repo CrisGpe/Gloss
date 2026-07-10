@@ -1,0 +1,77 @@
+<script>
+/**
+ * LÓGICA DE CITAS DIRECTA A SUPABASE JS (Arquitectura SPA)
+ */
+async function cargarCitasEnTablaJS() {
+    mostrarCargando();
+    try {
+        const hoy = new Date();
+        const hoyISO = hoy.toISOString().split('T')[0];
+        
+        const { data: citas, error } = await window.supabaseClient
+            .from('registro_citas')
+            .select('*')
+            .gte('fecha', hoyISO)
+            .order('fecha', { ascending: true })
+            .order('hora', { ascending: true });
+
+        if (error) throw error;
+
+        const tbody = document.getElementById('bodyGestionCitas');
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+
+        if (!citas || citas.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center">No hay citas próximas.</td></tr>';
+        } else {
+            citas.forEach((cita) => {
+                // Formateo visual
+                tbody.innerHTML += `
+                <tr>
+                  <td>
+                      <div class="small fw-bold">${cita.fecha}</div>
+                      <div class="small text-muted">${cita.hora}</div>
+                  </td>
+                  <td>${cita.cliente}</td>
+                  <td><span class="badge bg-info text-dark">${cita.servicio}</span></td>
+                  <td>${cita.agente || 'Sin Asignar'}</td>
+                  <td class="text-center">
+                      <button class="btn btn-sm btn-outline-primary" onclick="window.editarCitaJS(${cita.id})">
+                          <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" onclick="window.eliminarCitaJS(${cita.id})">
+                          <i class="fas fa-trash"></i>
+                      </button>
+                  </td>
+                </tr>`;
+            });
+        }
+        
+        ocultarCargando();
+        const modalEl = document.getElementById('modalListadoCitas');
+        if (modalEl) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    } catch (e) {
+        ocultarCargando();
+        console.error("Error al cargar citas de Supabase JS:", e);
+        Swal.fire('Error', 'No se pudieron cargar las citas', 'error');
+    }
+}
+
+// Reemplazar la antigua función de filtrado
+window.filtrarViewCitasHoy = cargarCitasEnTablaJS;
+
+window.eliminarCitaJS = async function(id) {
+    if (confirm("¿Eliminar esta cita?")) {
+        const { error } = await window.supabaseClient.from('registro_citas').delete().eq('id', id);
+        if (!error) cargarCitasEnTablaJS();
+    }
+};
+
+window.editarCitaJS = function(id) {
+    Swal.fire('Aviso', 'La edición en modo SPA estará disponible pronto.', 'info');
+};
+</script>

@@ -29,6 +29,11 @@ function doGet(e) {
 
   try {
     const htmlTemplate = HtmlService.createTemplateFromFile(page);
+    
+    // Inyectar variables de Supabase para el cliente JS
+    htmlTemplate.supabaseUrl = "https://jkwlvexclifwdpnzshpt.supabase.co";
+    htmlTemplate.supabaseKey = PropertiesService.getScriptProperties().getProperty("SUPABASE_ANON_KEY") || PropertiesService.getScriptProperties().getProperty("SUPABASE_KEY");
+
     const htmlOutput = htmlTemplate.evaluate();
     
     htmlOutput.setTitle(title)
@@ -68,6 +73,11 @@ function getDashboardHtml(rolePage) {
   else if (rolePage === 'reportes') page = 'reportesDashboard';
   
   const template = HtmlService.createTemplateFromFile(page);
+  
+  // Inyectar variables de Supabase para el cliente JS
+  template.supabaseUrl = "https://jkwlvexclifwdpnzshpt.supabase.co";
+  template.supabaseKey = PropertiesService.getScriptProperties().getProperty("SUPABASE_ANON_KEY") || PropertiesService.getScriptProperties().getProperty("SUPABASE_KEY");
+
   return template.evaluate().getContent();
 }
 
@@ -84,34 +94,7 @@ function include(filename) {
   }
 }
 
-function verificarPinUsuario(pin) {
-  console.log("SERVER DEBUG: Iniciando verificarPinUsuario...");
-  try {
-    if (!pin || String(pin).trim() === "") {
-      return { success: false, message: "PIN requerido." };
-    }
 
-    const pinLimpio = String(pin).trim();
-    
-    console.log("SERVER DEBUG: Validando PIN vía RPC...");
-    const resultado = Supabase.rpc("verificar_pin", { pin_input: pinLimpio });
-    console.log("SERVER DEBUG: Resultado RPC:", JSON.stringify(resultado));
-    
-    if (!resultado || !resultado.success) {
-      return { success: false, message: "PIN incorrecto o usuario inactivo." };
-    }
-    
-    return {
-      success: true,
-      rol: resultado.rol,
-      nombre: resultado.nombre,
-      token: resultado.token
-    };
-  } catch (e) {
-    console.error("SERVER DEBUG ERROR: Error en verificarPinUsuario: " + e.message, e.stack);
-    return { success: false, message: "Error interno: " + e.message };
-  }
-}
 
 /**
  * 🛠️ APIS DEL PANEL SECRETO (CRUD DIRECTO A SUPABASE)

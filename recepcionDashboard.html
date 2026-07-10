@@ -14,6 +14,17 @@
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/es.js'></script>
+    
+    <!-- ⚡ SUPABASE JS (Arquitectura Directa) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      window.SUPABASE_URL = "<?= supabaseUrl ?>";
+      window.SUPABASE_KEY = "<?= supabaseKey ?>";
+      
+      // Inicializar el cliente global
+      window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+      console.log("CLIENT DEBUG: Supabase JS Inicializado.");
+    </script>
   </head>
   <body>
     <!-- SPA LOGIN WALL -->

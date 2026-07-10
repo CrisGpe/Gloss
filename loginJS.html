@@ -52,37 +52,50 @@ function submitPin() {
     setLoading(true);
     errorMsg.textContent = '';
     
-    google.script.run
-        .withSuccessHandler(function(response) {
-            if (response && response.success) {
-                // Autenticado correctamente
-                sessionStorage.setItem("userRole", response.rol);
-                sessionStorage.setItem("userName", response.nombre);
-                sessionStorage.setItem("userToken", response.token);
-                
-                // Cargar el dashboard SPA
-                setLoading(false);
-                const loginWall = document.getElementById('loginWall');
-                const appWall = document.getElementById('appWall');
-                if(loginWall) loginWall.style.display = 'none';
-                if(appWall) appWall.style.display = 'block';
-                
-                // Inicializar el dashboard manualmente
-                if (typeof inicializarDashboardTotal === 'function') {
-                    inicializarDashboardTotal();
-                }
-                    
-            } else {
-                setLoading(false);
-                errorMsg.textContent = response.message || 'PIN Incorrecto';
-                clearPin();
-            }
-        })
-        .withFailureHandler(function(error) {
+    // 🚀 LÓGICA DE LOGIN SPA DIRECTO CON SUPABASE AUTH
+    let authEmail = "";
+    let authPass = "";
+    
+    // Mapeo interno para no cambiar la experiencia UX de 4 dígitos
+    if (currentPin === "1234") {
+        authEmail = "desarrollador@gloss.com";
+        authPass = "gloss123456";
+    } else {
+        authEmail = "recepcion@gloss.com";
+        authPass = "gloss" + currentPin; // Ej: gloss5678
+    }
+
+    // Usamos el cliente global de Supabase cargado en recepcionDashboard
+    window.supabaseClient.auth.signInWithPassword({
+        email: authEmail,
+        password: authPass
+    }).then(({ data, error }) => {
+        if (error) {
             setLoading(false);
-            errorMsg.textContent = 'Error de conexión: ' + error;
+            errorMsg.textContent = "PIN incorrecto o usuario no registrado.";
+            console.error("Auth Error:", error.message);
+            // Limpiar PIN visualmente
             clearPin();
-        })
-        .verificarPinUsuario(currentPin);
+        } else {
+            console.log("CLIENT DEBUG: Autenticado directamente con Supabase Auth.");
+            
+            // Extraer nombre (temporalmente estático hasta migrar roles)
+            const nombreUser = (authEmail === "desarrollador@gloss.com") ? "Cristian" : "Recepción";
+            sessionStorage.setItem("userName", nombreUser);
+            sessionStorage.setItem("userToken", data.session.access_token);
+            
+            // Transición limpia de SPA
+            setLoading(false);
+            const loginWall = document.getElementById('loginWall');
+            const appWall = document.getElementById('appWall');
+            if(loginWall) loginWall.style.display = 'none';
+            if(appWall) appWall.style.display = 'block';
+            
+            // Disparar carga del dashboard principal
+            if (typeof inicializarDashboardTotal === 'function') {
+                inicializarDashboardTotal();
+            }
+        }
+    });
 }
 </script>
