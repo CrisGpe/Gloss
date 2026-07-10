@@ -14,6 +14,7 @@
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/es.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
     <!-- SPA LOGIN WALL -->
@@ -371,24 +372,19 @@
     <?!= include('gestionNoModalVentasCajaJS'); ?>
     <?!= include('onLoadJS.html'); ?>
 
-    <!-- Supabase JS (Librería Local Embebida para máxima compatibilidad) -->
-    <?!= include('SupabaseJS_lib'); ?>
-    
+    <!-- Supabase JS Initialization -->
     <script>
-      console.log("CLIENT DEBUG STEP 1: Supabase JS librería inyectada en el DOM.");
-      console.log("CLIENT DEBUG STEP 2: Evaluando variables del servidor...");
+      console.error("CLIENT DEBUG STEP 1: Evaluando variables del servidor...");
       window.SUPABASE_URL = "<?= supabaseUrl ?>";
       window.SUPABASE_KEY = "<?= supabaseKey ?>";
-      console.log("CLIENT DEBUG STEP 3: URL =", window.SUPABASE_URL);
-      console.log("CLIENT DEBUG STEP 4: KEY Length =", window.SUPABASE_KEY ? window.SUPABASE_KEY.length : 0);
       
-      console.log("CLIENT DEBUG STEP 5: Inicializando cliente...");
-      if (typeof supabase !== 'undefined') {
-          window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-          console.log("CLIENT DEBUG SUCCESS: Supabase JS Cliente Creado Exitosamente de forma local.");
+      console.error("CLIENT DEBUG STEP 2: Inicializando cliente...");
+      if (window.supabase) {
+          window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+          console.error("CLIENT DEBUG SUCCESS: Supabase JS Cliente Creado Exitosamente.");
       } else {
-          console.error("CRÍTICO: supabase is undefined, incluso usando la librería local.");
-          alert("ERROR CRÍTICO: Falló la inicialización local de Supabase.");
+          console.error("CRÍTICO: window.supabase is undefined.");
+          alert("ERROR CRÍTICO: No se pudo cargar Supabase desde el CDN en el HEAD.");
       }
     </script>
 
