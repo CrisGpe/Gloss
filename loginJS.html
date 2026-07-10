@@ -1,7 +1,6 @@
 <script>
-console.error("💥 LOGINJS ROOT LEVEL LOG: Si ves esto, NO estás en caché. (Timestamp: " + Date.now() + ")");
-console.error("💥 STATUS DE SUPABASE GLOBAL AL CARGAR LOGINJS:", window.supabase);
-console.error("💥 STATUS DE CLIENTE SUPABASE AL CARGAR LOGINJS:", window.supabaseClient);
+console.error("💥 INICIANDO SCRIPT DE LOGIN SPA (VERSIÓN FETCH NATIVO) 💥");
+
 let currentPin = '';
 const maxPinLength = 4;
 const dots = document.querySelectorAll('.pin-dot');
@@ -49,62 +48,80 @@ function setLoading(isLoading) {
     }
 }
 
-function submitPin() {
+async function submitPin() {
     if (currentPin.length === 0) return;
     
     setLoading(true);
     errorMsg.textContent = '';
     
-    // 🚀 LÓGICA DE LOGIN SPA DIRECTO CON SUPABASE AUTH
     let authEmail = "";
     let authPass = "";
     
-    // Mapeo interno para no cambiar la experiencia UX de 4 dígitos
+    // Mapeo interno para no cambiar la UX de 4 dígitos
     if (currentPin === "1234") {
         authEmail = "desarrollador@gloss.com";
         authPass = "gloss123456";
     } else {
         authEmail = "recepcion@gloss.com";
-        authPass = "gloss" + currentPin; // Ej: gloss5678
+        authPass = "gloss" + currentPin; 
     }
 
-    if (!window.supabaseClient) {
+    // Leer variables inyectadas en el HTML principal (seguro contra Sandbox)
+    const supaUrlMeta = document.querySelector('meta[name="supabase-url"]');
+    const supaKeyMeta = document.querySelector('meta[name="supabase-key"]');
+    
+    const supaUrl = supaUrlMeta ? supaUrlMeta.content : null;
+    const supaKey = supaKeyMeta ? supaKeyMeta.content : null;
+
+    if (!supaUrl || !supaKey) {
         setLoading(false);
-        errorMsg.textContent = "El sistema se está conectando. Intente en un segundo...";
+        errorMsg.textContent = "Error interno: Faltan credenciales de conexión.";
+        console.error("CRÍTICO: SUPABASE_URL o SUPABASE_KEY no definidos.");
         return;
     }
 
-    // Usamos el cliente global de Supabase cargado en recepcionDashboard
-    window.supabaseClient.auth.signInWithPassword({
-        email: authEmail,
-        password: authPass
-    }).then(({ data, error }) => {
-        if (error) {
+    try {
+        console.log("CLIENT DEBUG: Autenticando mediante REST API (Fetch)...");
+        const response = await fetch(`${supaUrl}/auth/v1/token?grant_type=password`, {
+            method: 'POST',
+            headers: {
+                'apikey': supaKey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: authEmail,
+                password: authPass
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
             setLoading(false);
             errorMsg.textContent = "PIN incorrecto o usuario no registrado.";
-            console.error("Auth Error:", error.message);
-            // Limpiar PIN visualmente
+            console.error("Auth Error (Fetch):", data.error_description || data.msg);
             clearPin();
         } else {
-            console.log("CLIENT DEBUG: Autenticado directamente con Supabase Auth.");
+            console.log("CLIENT DEBUG: Autenticado exitosamente con Fetch API.");
             
-            // Extraer nombre (temporalmente estático hasta migrar roles)
             const nombreUser = (authEmail === "desarrollador@gloss.com") ? "Cristian" : "Recepción";
             sessionStorage.setItem("userName", nombreUser);
-            sessionStorage.setItem("userToken", data.session.access_token);
+            sessionStorage.setItem("userToken", data.access_token);
             
-            // Transición limpia de SPA
             setLoading(false);
             const loginWall = document.getElementById('loginWall');
             const appWall = document.getElementById('appWall');
             if(loginWall) loginWall.style.display = 'none';
             if(appWall) appWall.style.display = 'block';
             
-            // Disparar carga del dashboard principal
             if (typeof inicializarDashboardTotal === 'function') {
                 inicializarDashboardTotal();
             }
         }
-    });
+    } catch (err) {
+        setLoading(false);
+        errorMsg.textContent = "Error de red al conectar al servidor central.";
+        console.error("Fetch Exception:", err);
+    }
 }
 </script>
