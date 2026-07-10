@@ -254,32 +254,22 @@ window.filtroOATCActivo = 'Pendientes';
       }, 1300);
 
       setTimeout(() => {
-        console.log("DEBUG: Cargando siguiente número de orden y migrando citas de hoy...");
+        console.log("DEBUG: Cargando siguiente número de orden...");
         obtenerSiguienteNumeroOATC();
 
-        google.script.run
-          .withSuccessHandler(function(respuesta) {
-            console.log("DEBUG: Migración de citas completada exitosamente.");
-            
-            // Renderizado inicial de tablas
-            if (typeof window.filtrarView === 'function') window.filtrarView();
-            
-            if (typeof window.filtrarViewOATCPendientes === 'function') {
-              window.filtroOATCActivo = 'Pendientes';
-              window.filtrarViewOATCPendientes();
-            }
-            
-            // Activación del ciclo de vida de actualización automática
-            iniciarSondeoDeDatos(); 
-            
-            // Liberación de la interfaz
-            ocultarCargando();
-          })
-          .withFailureHandler(err => { 
-            ocultarCargando(); 
-            window.onFailureConexion(err); 
-          })
-          .migrarCitasDeHoy();
+        // Renderizado inicial de tablas
+        if (typeof window.filtrarView === 'function') window.filtrarView();
+        
+        if (typeof window.filtrarViewOATCPendientes === 'function') {
+          window.filtroOATCActivo = 'Pendientes';
+          window.filtrarViewOATCPendientes();
+        }
+        
+        // Activación del ciclo de vida de actualización automática
+        iniciarSondeoDeDatos(); 
+        
+        // Liberación de la interfaz
+        ocultarCargando();
       }, 1700);
     }
 
