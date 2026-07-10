@@ -14,17 +14,6 @@
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/es.js'></script>
-    
-    <!-- ⚡ SUPABASE JS (Arquitectura Directa) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-      window.SUPABASE_URL = "<?= supabaseUrl ?>";
-      window.SUPABASE_KEY = "<?= supabaseKey ?>";
-      
-      // Inicializar el cliente global
-      window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-      console.log("CLIENT DEBUG: Supabase JS Inicializado.");
-    </script>
   </head>
   <body>
     <!-- SPA LOGIN WALL -->
@@ -39,18 +28,6 @@
         console.error("DASHBOARD CRITICAL RUNTIME ERROR:", e.error);
         if (window.Swal) {
           Swal.fire({
-            icon: 'error',
-            title: 'Error de Inicialización del Dashboard',
-            text: e.message,
-            footer: 'Archivo: ' + e.filename + ' | Línea: ' + e.lineno
-          });
-        } else {
-          alert("ERROR EN DASHBOARD:\n" + e.message + "\nArchivo: " + e.filename + "\nLínea: " + e.lineno);
-        }
-      });
-      // window.onload was moved up or removed, we will manually call inicializarDashboardTotal in loginJS
-    </script>
-    
     <div id="loading-overlay">
       <div class="spinner-custom"></div>
       <div class="loading-text">PROCESANDO...</div>
@@ -394,5 +371,23 @@
     <?!= include('gestionNoModalVentasCajaJS'); ?>
     <?!= include('onLoadJS.html'); ?>
 
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      console.log("CLIENT DEBUG: Inicializando Supabase JS...");
+      window.SUPABASE_URL = "<?= supabaseUrl ?>";
+      window.SUPABASE_KEY = "<?= supabaseKey ?>";
+      
+      if (typeof supabase !== 'undefined') {
+          window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+          console.log("CLIENT DEBUG: Supabase JS Cliente Creado Exitosamente.");
+      } else {
+          console.error("CRÍTICO: CDN de Supabase falló al cargar.");
+      }
+    </script>
+
+    <?!= include('relojJS'); ?>
+    <?!= include('citasSupabaseJS'); ?>
+    <?!= include('loginJS'); ?>
   </div></body>
 </html>
