@@ -32,7 +32,7 @@ function doGet(e) {
     
     // Inyectar variables de Supabase para el cliente JS
     htmlTemplate.supabaseUrl = "https://jkwlvexclifwdpnzshpt.supabase.co";
-    htmlTemplate.supabaseKey = PropertiesService.getScriptProperties().getProperty("SUPABASE_ANON_KEY") || PropertiesService.getScriptProperties().getProperty("SUPABASE_KEY");
+    htmlTemplate.supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imprd2x2ZXhjbGlmd2RwbnpzaHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNjg1ODQsImV4cCI6MjA5NTY0NDU4NH0.2cYEomsvL5YoV9mvnaxvZj-CBn43sO_S1flfhE7pZLo";
 
     const htmlOutput = htmlTemplate.evaluate();
     
@@ -76,7 +76,7 @@ function getDashboardHtml(rolePage) {
   
   // Inyectar variables de Supabase para el cliente JS
   template.supabaseUrl = "https://jkwlvexclifwdpnzshpt.supabase.co";
-  template.supabaseKey = PropertiesService.getScriptProperties().getProperty("SUPABASE_ANON_KEY") || PropertiesService.getScriptProperties().getProperty("SUPABASE_KEY");
+  template.supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imprd2x2ZXhjbGlmd2RwbnpzaHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNjg1ODQsImV4cCI6MjA5NTY0NDU4NH0.2cYEomsvL5YoV9mvnaxvZj-CBn43sO_S1flfhE7pZLo";
 
   return template.evaluate().getContent();
 }

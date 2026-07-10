@@ -8,13 +8,7 @@ let _cachedSupabaseKey = null;
 const SupabaseConfig = {
   URL: "https://jkwlvexclifwdpnzshpt.supabase.co/rest/v1",
   get KEY() {
-    if (!_cachedSupabaseKey) {
-      _cachedSupabaseKey = PropertiesService.getScriptProperties().getProperty("SUPABASE_KEY");
-      if (!_cachedSupabaseKey) {
-        console.warn("Falta configurar SUPABASE_KEY en las Propiedades del Script.");
-      }
-    }
-    return _cachedSupabaseKey;
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imprd2x2ZXhjbGlmd2RwbnpzaHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNjg1ODQsImV4cCI6MjA5NTY0NDU4NH0.2cYEomsvL5YoV9mvnaxvZj-CBn43sO_S1flfhE7pZLo";
   }
 };
 
