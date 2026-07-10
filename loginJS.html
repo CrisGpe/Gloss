@@ -67,11 +67,9 @@ async function submitPin() {
     }
 
     // Leer variables inyectadas en el HTML principal (seguro contra Sandbox)
-    const supaUrlMeta = document.querySelector('meta[name="supabase-url"]');
-    const supaKeyMeta = document.querySelector('meta[name="supabase-key"]');
-    
-    const supaUrl = supaUrlMeta ? supaUrlMeta.content : null;
-    const supaKey = supaKeyMeta ? supaKeyMeta.content : null;
+    const configDiv = document.getElementById('supabase-config');
+    const supaUrl = configDiv ? configDiv.dataset.url : null;
+    const supaKey = configDiv ? configDiv.dataset.key : null;
 
     if (!supaUrl || !supaKey) {
         setLoading(false);
