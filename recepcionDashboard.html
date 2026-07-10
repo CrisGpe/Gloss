@@ -372,25 +372,32 @@
     <?!= include('onLoadJS.html'); ?>
 
     <!-- Supabase JS (Carga Segura con Polling) -->
+    <script>
+      console.log("CLIENT DEBUG STEP 1: Script de inicialización de Supabase empezando a ejecutar.");
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+      console.log("CLIENT DEBUG STEP 2: Evaluando variables del servidor...");
       window.SUPABASE_URL = "<?= supabaseUrl ?>";
       window.SUPABASE_KEY = "<?= supabaseKey ?>";
+      console.log("CLIENT DEBUG STEP 3: URL =", window.SUPABASE_URL);
+      console.log("CLIENT DEBUG STEP 4: KEY Length =", window.SUPABASE_KEY ? window.SUPABASE_KEY.length : 0);
       
-      console.log("CLIENT DEBUG: Esperando a que el CDN de Supabase termine de cargar...");
+      console.log("CLIENT DEBUG STEP 5: Esperando a que el CDN de Supabase termine de cargar...");
       
-      // Polling para detectar cuando Supabase esté listo, evadiendo los bloqueos de onload en GAS
       var intentosSupabase = 0;
       var supabaseCheckInterval = setInterval(function() {
+          console.log("CLIENT DEBUG POLLING: Intento " + intentosSupabase + ", typeof supabase =", typeof supabase);
           if (typeof supabase !== 'undefined') {
               clearInterval(supabaseCheckInterval);
               window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-              console.log("CLIENT DEBUG: Supabase JS Cliente Creado Exitosamente.");
+              console.log("CLIENT DEBUG SUCCESS: Supabase JS Cliente Creado Exitosamente.");
           } else {
               intentosSupabase++;
-              if (intentosSupabase > 100) { // Timeout después de 10 segundos
+              if (intentosSupabase > 50) { // Timeout después de 5 segundos
                   clearInterval(supabaseCheckInterval);
                   console.error("CRÍTICO: Tiempo de espera agotado para el CDN de Supabase.");
+                  alert("ERROR CRÍTICO: No se pudo cargar Supabase desde el CDN.");
               }
           }
       }, 100);
