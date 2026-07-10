@@ -21,8 +21,8 @@ window.filtroOATCActivo = 'Pendientes';
       // Activamos el overlay de carga inmediatamente
       mostrarCargando(); 
       
-      // Delegamos la carga de datos maestros de forma secuencial y segura
-      setTimeout(loadLoads, 1500);
+      // Delegamos la carga de datos maestros a la función inicializarDashboardTotal
+      // que será llamada solo DESPUÉS de hacer login exitosamente.
 
       /**
        * --- B. REGISTRO DE EVENTOS PARA BOTONES ESTÁTICOS ---
@@ -512,6 +512,13 @@ window.filtroOATCActivo = 'Pendientes';
     window.mostrarSpinner = mostrarCargando;
     
     window.loadLoads = loadLoads;
+
+    // --- K. INICIALIZADOR POST-LOGIN ---
+    window.inicializarDashboardTotal = function() {
+        console.log("DEBUG: Inicializando dashboard post-login...");
+        mostrarCargando();
+        setTimeout(loadLoads, 500);
+    };
 
 })(); // FIN DEL IIFE
 </script>
