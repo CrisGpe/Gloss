@@ -1,6 +1,14 @@
 <script>
 console.error("💥 INICIANDO SCRIPT DE LOGIN SPA (VERSIÓN FETCH NATIVO) 💥");
 
+(function initSupabaseGlobal() {
+    const configDiv = document.getElementById('supabase-config-login');
+    if (configDiv && window.supabase && !window.supabaseClient) {
+        window.supabaseClient = window.supabase.createClient(configDiv.dataset.url, configDiv.dataset.key);
+        console.log("CLIENT DEBUG: Cliente Supabase JS global inicializado.");
+    }
+})();
+
 let currentPin = '';
 const maxPinLength = 4;
 const dots = document.querySelectorAll('.pin-dot');
