@@ -160,11 +160,11 @@
       const filaAEditar = document.getElementById('fechaInputCitaModal').dataset.filaEditar;
       const CitaForm = {
         numFila: filaAEditar || null, // Si existe, el servidor sabrá que es edición
-        fechaCita: document.getElementById('fechaInputCitaModal')?.value,
-        horaCita: document.getElementById('horaInputCitaModal')?.value,
-        nombreClienteOATC: document.getElementById('clientesDatalistCitaModal')?.value,
-        nombreAgenteOATC: document.getElementById('agentesDisponiblesDatalistCitaModal')?.value,
-        tipoOATC: document.getElementById('tipoOATCDatalistCitaModal')?.value
+        fechaCita: (document.getElementById('fechaInputCitaModal') || {}).value,
+        horaCita: (document.getElementById('horaInputCitaModal') || {}).value,
+        nombreClienteOATC: (document.getElementById('clientesDatalistCitaModal') || {}).value,
+        nombreAgenteOATC: (document.getElementById('agentesDisponiblesDatalistCitaModal') || {}).value,
+        tipoOATC: (document.getElementById('tipoOATCDatalistCitaModal') || {}).value
       };
 
       // Validación con SweetAlert2

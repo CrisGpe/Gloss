@@ -16,7 +16,7 @@
     // --- MEJORA CRÍTICA: Uso de Data Attributes ---
     // En lugar de limpiar texto con Regex, usamos el ID que inyectamos en el renderizado
     const oatcIdLimpio = target.getAttribute('data-oatc-id');
-    const agenteNombre = row.querySelector(".ordenesATCAgente")?.textContent?.trim() || "";
+    const agenteNombre = (row.querySelector(".ordenesATCAgente") || {textContent:""}).textContent.trim() || "";
 
     /**
      * Helper interno para ejecutar acciones con el servidor
@@ -146,12 +146,12 @@
 
     // 2. Captura inicial de datos
     const OATCform = {
-      numeroOATC: document.getElementById('floatingInputNumeroOATC')?.value,
-      fechaOATC: document.getElementById('datePicker')?.value,
-      nombreClienteOATC: document.getElementById('clientesDatalistOATC')?.value.trim(), // Limpiamos espacios
-      tipoClienteOATC: document.getElementById('tipoClientesDatalist')?.value,
-      nombreAgenteOATC: document.getElementById('agentsDisponiblesDatalist')?.value,
-      tipoOATC: document.getElementById('tipoOATCDatalist')?.value
+      numeroOATC: (document.getElementById('floatingInputNumeroOATC') || {}).value,
+      fechaOATC: (document.getElementById('datePicker') || {}).value,
+      nombreClienteOATC: (document.getElementById('clientesDatalistOATC') || {}).value.trim(), // Limpiamos espacios
+      tipoClienteOATC: (document.getElementById('tipoClientesDatalist') || {}).value,
+      nombreAgenteOATC: (document.getElementById('agentsDisponiblesDatalist') || {}).value,
+      tipoOATC: (document.getElementById('tipoOATCDatalist') || {}).value
     };
 
     // 3. Verificación lógica: Tipo de cliente sigue siendo obligatorio

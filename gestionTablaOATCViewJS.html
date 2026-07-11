@@ -214,7 +214,7 @@ var oatcDataTableInstance = null;
     const rawId = target.getAttribute('data-oatc-id');
     const oatcId = String(rawId).split(' ')[0].trim();
     const row = target.closest('tr');
-    const agenteNombre = row?.querySelector(".ordenesATCAgente")?.textContent?.trim() || "";
+    const agenteNombre = ((row ? row.querySelector(".ordenesATCAgente") : null) || {textContent:""}).textContent.trim() || "";
 
     // --- LÓGICA DE MODALES Y ACCIONES ---
 
@@ -230,7 +230,7 @@ var oatcDataTableInstance = null;
 
     // B. ASIGNAR AGENTE
     else if (target.matches(".asignarActivarModalBtn")) {
-      window.abrirModalAsignacionAgente?.(oatcId);
+      if (window.abrirModalAsignacionAgente) window.abrirModalAsignacionAgente(oatcId);
     } 
 
     // C. EDICIÓN DE CLIENTE (Dropdown y Nombre Clickeable)
@@ -245,7 +245,7 @@ var oatcDataTableInstance = null;
 
     // D. EDICIÓN TIPO ATENCIÓN (Dropdown)
     else if (target.matches(".editarTipoAtencionOATC")) {
-      window.abrirModalEdicionTipoAtencion?.(oatcId);
+      if (window.abrirModalEdicionTipoAtencion) window.abrirModalEdicionTipoAtencion(oatcId);
     }
 
     // E. ENVIAR A CAJA (Extrae datos adicionales del dataset)
