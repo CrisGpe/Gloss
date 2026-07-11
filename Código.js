@@ -44,14 +44,7 @@ function doGet(e) {
     return htmlOutput;
   } catch (err) {
     console.error(`SERVER DEBUG CRÍTICO: Error al servir ${page}: ` + err.message, err.stack);
-    return HtmlService.createHtmlOutput(`
-      <html>
-        <body style="background: #0f172a; color: #f1f5f9; font-family: sans-serif; padding: 30px; text-align: center;">
-          <h1 style="color: #ef4444;">Error Crítico del Servidor</h1>
-          <p>No se pudo cargar la vista inicial: ${err.message}</p>
-        </body>
-      </html>
-    `).setTitle("Error de Servidor").setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    return HtmlService.createHtmlOutput(` <html> <body style="background: #0f172a; color: #f1f5f9; font-family: sans-serif; padding: 30px; text-align: center;"> <h1 style="color: #ef4444;">Error Crítico del Servidor</h1> <p>No se pudo cargar la vista inicial: ${err.message}</p> </body> </html> `).setTitle("Error de Servidor").setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
 }
 

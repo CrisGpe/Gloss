@@ -224,19 +224,7 @@ function renderizarTablaReporteOATC(lista) {
     // Símbolo o correlativo
     const ordText = o.correlativo ? `${o.correlativo} (${displayDemanda})` : `${o.hora} (${displayDemanda})`;
 
-    return `
-      <tr>
-        <td>${o.fechaTexto}</td>
-        <td>${o.hora}</td>
-        <td class="fw-bold">${ordText}</td>
-        <td>${o.clienteNombre} <br><small class="text-muted">DNI: ${o.clienteDni}</small></td>
-        <td>${o.clienteCelular}</td>
-        <td><span class="badge bg-light text-dark border">${displayDemanda}</span></td>
-        <td>${o.atencion}</td>
-        <td><span class="fw-medium">${o.agente}</span></td>
-        <td>${badgeEstado}</td>
-      </tr>
-    `;
+    return ` <tr> <td>${o.fechaTexto}</td> <td>${o.hora}</td> <td class="fw-bold">${ordText}</td> <td>${o.clienteNombre} <br><small class="text-muted">DNI: ${o.clienteDni}</small></td> <td>${o.clienteCelular}</td> <td><span class="badge bg-light text-dark border">${displayDemanda}</span></td> <td>${o.atencion}</td> <td><span class="fw-medium">${o.agente}</span></td> <td>${badgeEstado}</td> </tr> `;
   }).join("");
 
   $('#tablaReporteDatosOATC').DataTable({

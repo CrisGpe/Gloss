@@ -66,14 +66,7 @@ var turnosDataTableInstance = null;
       const badgeColor = String(categoria).toLowerCase().includes("estilismo") ? "bg-primary" : "bg-info text-dark";
       const filaJSON = encodeURIComponent(JSON.stringify(filaDeDatos));
       
-      trFragment.querySelector(".template-disponibilidadTurnosDependiente").innerHTML = `
-        <div class="d-flex flex-column align-items-center justify-content-center text-center py-1">
-          <a href="#" class="stylist-hours-link text-decoration-none fw-bold stylist-name-link mb-1" data-fila="${filaJSON}" style="font-size: 1.05rem; letter-spacing: 0.3px;">
-            ${depName}
-          </a>
-          <span class="badge ${badgeColor}" style="font-size: 0.85rem; font-weight: 700; padding: 5px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; white-space: nowrap;">${categoria}</span>
-        </div>
-      `;
+      trFragment.querySelector(".template-disponibilidadTurnosDependiente").innerHTML = ` <div class="d-flex flex-column align-items-center justify-content-center text-center py-1"> <a href="#" class="stylist-hours-link text-decoration-none fw-bold stylist-name-link mb-1" data-fila="${filaJSON}" style="font-size: 1.05rem; letter-spacing: 0.3px;"> ${depName} </a> <span class="badge ${badgeColor}" style="font-size: 0.85rem; font-weight: 700; padding: 5px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; white-space: nowrap;">${categoria}</span> </div> `;
 
       trFragment.querySelector(".template-disponibilidadTurnosEstado").innerHTML = `<span class="template-disponibilidadTurnosEstado-badge">${estadoTexto}</span>`; 
       trFragment.querySelector(".template-disponibilidadTurnosUltAct").textContent = filaDeDatos[T_INDEX_ULT_ACT]; 

@@ -27,24 +27,7 @@ async function cargarCitasEnTablaJS() {
         } else {
             citas.forEach((cita) => {
                 // Formateo visual
-                tbody.innerHTML += `
-                <tr>
-                  <td>
-                      <div class="small fw-bold">${cita.fecha}</div>
-                      <div class="small text-muted">${cita.hora}</div>
-                  </td>
-                  <td>${cita.cliente}</td>
-                  <td><span class="badge bg-info text-dark">${cita.servicio}</span></td>
-                  <td>${cita.agente || 'Sin Asignar'}</td>
-                  <td class="text-center">
-                      <button class="btn btn-sm btn-outline-primary" onclick="window.editarCitaJS(${cita.id})">
-                          <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-sm btn-outline-danger" onclick="window.eliminarCitaJS(${cita.id})">
-                          <i class="fas fa-trash"></i>
-                      </button>
-                  </td>
-                </tr>`;
+                tbody.innerHTML += ` <tr> <td> <div class="small fw-bold">${cita.fecha}</div> <div class="small text-muted">${cita.hora}</div> </td> <td>${cita.cliente}</td> <td><span class="badge bg-info text-dark">${cita.servicio}</span></td> <td>${cita.agente || 'Sin Asignar'}</td> <td class="text-center"> <button class="btn btn-sm btn-outline-primary" onclick="window.editarCitaJS(${cita.id})"> <i class="fas fa-edit"></i> </button> <button class="btn btn-sm btn-outline-danger" onclick="window.eliminarCitaJS(${cita.id})"> <i class="fas fa-trash"></i> </button> </td> </tr>`;
             });
         }
         

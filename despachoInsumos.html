@@ -182,17 +182,9 @@
               return;
             }
 
-            body.innerHTML = insumos.map(ins => `
-              <tr>
-                <td class="fw-bold">${ins.nombre}</td>
-                <td><span class="badge ${ins.stock > 5 ? 'bg-success' : 'bg-danger'}">${ins.stock}</span></td>
-                <td>${ins.unidad_medida}</td>
-              </tr>
-            `).join('');
+            body.innerHTML = insumos.map(ins => ` <tr> <td class="fw-bold">${ins.nombre}</td> <td><span class="badge ${ins.stock > 5 ? 'bg-success' : 'bg-danger'}">${ins.stock}</span></td> <td>${ins.unidad_medida}</td> </tr> `).join('');
 
-            select.innerHTML = '<option value="">-- Seleccionar --</option>' + insumos.map(ins => `
-              <option value="${ins.id}">${ins.nombre} (${ins.stock} ${ins.unidad_medida} disponibles)</option>
-            `).join('');
+            select.innerHTML = '<option value="">-- Seleccionar --</option>' + insumos.map(ins => ` <option value="${ins.id}">${ins.nombre} (${ins.stock} ${ins.unidad_medida} disponibles)</option> `).join('');
           })
           .obtenerInsumosInventario();
       }
@@ -206,14 +198,7 @@
               return;
             }
 
-            body.innerHTML = despachos.map(des => `
-              <tr>
-                <td>${new Date(des.fecha_despacho).toLocaleDateString('es-PE')}</td>
-                <td class="fw-bold">${des.insumo_nombre}</td>
-                <td>${des.cantidad}</td>
-                <td>${des.destino || des.notas || '-'}</td>
-              </tr>
-            `).join('');
+            body.innerHTML = despachos.map(des => ` <tr> <td>${new Date(des.fecha_despacho).toLocaleDateString('es-PE')}</td> <td class="fw-bold">${des.insumo_nombre}</td> <td>${des.cantidad}</td> <td>${des.destino || des.notas || '-'}</td> </tr> `).join('');
           })
           .obtenerDespachosRecientes();
       }

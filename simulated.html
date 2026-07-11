@@ -2709,22 +2709,9 @@ body.dark-theme .label-header-display {
 
                 // Botones dinámicos según tabla
                 if (tablaActiva === 'garbage') {
-                    rowHTML += `<td class="text-center">
-                        <button class="btn btn-sm btn-outline-warning" onclick="restaurarFila('${row.id}')">
-                            <i class="fa-solid fa-undo me-1"></i> Restaurar
-                        </button>
-                    </td>`;
+                    rowHTML += `<td class="text-center"> <button class="btn btn-sm btn-outline-warning" onclick="restaurarFila('${row.id}')"> <i class="fa-solid fa-undo me-1"></i> Restaurar </button> </td>`;
                 } else {
-                    rowHTML += `<td class="text-center">
-                        <div class="btn-group">
-                            <button class="btn btn-sm btn-outline-info" onclick='abrirModalEditar(${JSON.stringify(row)})'>
-                                <i class="fa-solid fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="eliminarFilaSecreta('${row.id}')">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>`;
+                    rowHTML += `<td class="text-center"> <div class="btn-group"> <button class="btn btn-sm btn-outline-info" onclick='abrirModalEditar(${JSON.stringify(row)})'> <i class="fa-solid fa-edit"></i> </button> <button class="btn btn-sm btn-outline-danger" onclick="eliminarFilaSecreta('${row.id}')"> <i class="fa-solid fa-trash"></i> </button> </div> </td>`;
                 }
                 rowHTML += '</tr>';
                 body.innerHTML += rowHTML;
@@ -2741,12 +2728,7 @@ body.dark-theme .label-header-display {
             columnasTabla.forEach(col => {
                 if (col === 'id' || col === 'created_at' || col === 'ficha_id' || col === 'correlativo') return;
                 
-                body.innerHTML += `
-                    <div class="mb-3">
-                        <label class="form-label">${col}</label>
-                        <input type="text" class="form-control bg-dark text-white border-secondary" id="form_${col}">
-                    </div>
-                `;
+                body.innerHTML += ` <div class="mb-3"> <label class="form-label">${col}</label> <input type="text" class="form-control bg-dark text-white border-secondary" id="form_${col}"> </div> `;
             });
 
             const modal = new bootstrap.Modal(document.getElementById('modalEdicion'));
@@ -2763,12 +2745,7 @@ body.dark-theme .label-header-display {
             columnasTabla.forEach(col => {
                 if (col === 'id' || col === 'created_at' || col === 'ficha_id' || col === 'correlativo') return;
                 
-                body.innerHTML += `
-                    <div class="mb-3">
-                        <label class="form-label">${col}</label>
-                        <input type="text" class="form-control bg-dark text-white border-secondary" id="form_${col}" value="${row[col] || ''}">
-                    </div>
-                `;
+                body.innerHTML += ` <div class="mb-3"> <label class="form-label">${col}</label> <input type="text" class="form-control bg-dark text-white border-secondary" id="form_${col}" value="${row[col] || ''}"> </div> `;
             });
 
             const modal = new bootstrap.Modal(document.getElementById('modalEdicion'));
@@ -3494,14 +3471,7 @@ var turnosDataTableInstance = null;
       const badgeColor = String(categoria).toLowerCase().includes("estilismo") ? "bg-primary" : "bg-info text-dark";
       const filaJSON = encodeURIComponent(JSON.stringify(filaDeDatos));
       
-      trFragment.querySelector(".template-disponibilidadTurnosDependiente").innerHTML = `
-        <div class="d-flex flex-column align-items-center justify-content-center text-center py-1">
-          <a href="#" class="stylist-hours-link text-decoration-none fw-bold stylist-name-link mb-1" data-fila="${filaJSON}" style="font-size: 1.05rem; letter-spacing: 0.3px;">
-            ${depName}
-          </a>
-          <span class="badge ${badgeColor}" style="font-size: 0.85rem; font-weight: 700; padding: 5px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; white-space: nowrap;">${categoria}</span>
-        </div>
-      `;
+      trFragment.querySelector(".template-disponibilidadTurnosDependiente").innerHTML = ` <div class="d-flex flex-column align-items-center justify-content-center text-center py-1"> <a href="#" class="stylist-hours-link text-decoration-none fw-bold stylist-name-link mb-1" data-fila="${filaJSON}" style="font-size: 1.05rem; letter-spacing: 0.3px;"> ${depName} </a> <span class="badge ${badgeColor}" style="font-size: 0.85rem; font-weight: 700; padding: 5px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; white-space: nowrap;">${categoria}</span> </div> `;
 
       trFragment.querySelector(".template-disponibilidadTurnosEstado").innerHTML = `<span class="template-disponibilidadTurnosEstado-badge">${estadoTexto}</span>`; 
       trFragment.querySelector(".template-disponibilidadTurnosUltAct").textContent = filaDeDatos[T_INDEX_ULT_ACT]; 
@@ -3797,15 +3767,7 @@ var oatcDataTableInstance = null;
 
   // --- 4. HELPERS ---
   function generarDropdownOpciones(idOATC) {
-    return `
-      <div class="dropdown d-inline-block">
-        <button class="btn btn-sm btn-warning dropdown-toggle p-1 ms-1" type="button" data-bs-toggle="dropdown">
-          <span style="font-size: 1.2em;">⋮</span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item ponerEnEsperaOATC" data-oatc-id="${idOATC}">Iniciar espera</a></li>
-        </ul>
-      </div>`;
+    return ` <div class="dropdown d-inline-block"> <button class="btn btn-sm btn-warning dropdown-toggle p-1 ms-1" type="button" data-bs-toggle="dropdown"> <span style="font-size: 1.2em;">⋮</span> </button> <ul class="dropdown-menu dropdown-menu-end"> <li><a class="dropdown-item ponerEnEsperaOATC" data-oatc-id="${idOATC}">Iniciar espera</a></li> </ul> </div>`;
   }
 
   // El manejador de clicks delegados (handleOATCMultiClick) se mantiene igual pero se expone
@@ -4642,12 +4604,7 @@ window.guardarNotasServidor = function() {
                 item.href = 'javascript:void(0)';
                 item.className = 'list-group-item list-group-item-action animate__animated animate__fadeIn';
                 
-                item.innerHTML = `
-                    <div class="d-flex w-100 justify-content-between">
-                        <h6 class="mb-1">${nombreCompleto}</h6>
-                    </div>
-                    <small class="text-muted">DNI: ${dni} | Cel: ${celular}</small>
-                `;
+                item.innerHTML = ` <div class="d-flex w-100 justify-content-between"> <h6 class="mb-1">${nombreCompleto}</h6> </div> <small class="text-muted">DNI: ${dni} | Cel: ${celular}</small> `;
                 
                 // Acción al seleccionar: Ahora inyecta la cadena completa con el formato de filtrado
                 item.onclick = function(e) {
@@ -4866,13 +4823,7 @@ window.guardarNotasServidor = function() {
         if (!tbody) return;
 
         // Mostrar estado de carga visual dentro de la tabla
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="10" class="text-center py-5">
-                    <div class="spinner-border text-primary mb-2" role="status"></div>
-                    <p class="text-muted">Obteniendo base de datos de agentes...</p>
-                </td>
-            </tr>`;
+        tbody.innerHTML = ` <tr> <td colspan="10" class="text-center py-5"> <div class="spinner-border text-primary mb-2" role="status"></div> <p class="text-muted">Obteniendo base de datos de agentes...</p> </td> </tr>`;
         
         google.script.run
             .withSuccessHandler((agentes) => {
@@ -5769,27 +5720,10 @@ function mostrarDetalleCitas(citas, fechaIso) {
   // Convertimos yyyy-mm-dd a dd/mm/yyyy para el título
   const fechaTitulo = fechaIso.split('-').reverse().join('/');
   
-  let tablaHtml = `
-    <div class="table-responsive">
-      <table class="table table-sm table-striped mt-2" style="font-size: 13px;">
-        <thead>
-          <tr class="table-dark">
-            <th>Hora</th>
-            <th>Agente</th> <th>Cliente</th>
-            <th>Servicio</th>
-          </tr>
-        </thead>
-        <tbody>
-  `;
+  let tablaHtml = ` <div class="table-responsive"> <table class="table table-sm table-striped mt-2" style="font-size: 13px;"> <thead> <tr class="table-dark"> <th>Hora</th> <th>Agente</th> <th>Cliente</th> <th>Servicio</th> </tr> </thead> <tbody> `;
 
   citas.forEach(c => {
-    tablaHtml += `
-      <tr>
-        <td><strong>${c.hora}</strong></td>
-        <td>${c.agente || 'No asignado'}</td> <td>${c.cliente}</td>
-        <td><span class="badge bg-light text-dark border">${c.servicio}</span></td>
-      </tr>
-    `;
+    tablaHtml += ` <tr> <td><strong>${c.hora}</strong></td> <td>${c.agente || 'No asignado'}</td> <td>${c.cliente}</td> <td><span class="badge bg-light text-dark border">${c.servicio}</span></td> </tr> `;
   });
 
   tablaHtml += `</tbody></table></div>`;
@@ -5976,22 +5910,7 @@ function renderizarTablaHistorial(datos, nombre) {
   tablaContenedor.classList.remove('d-none');
 
   datos.forEach(reg => {
-    const fila = `
-      <tr>
-        <td class="ps-3">
-          <strong>${reg.fecha}</strong><br>
-          <small class="text-muted">${reg.idOatc}</small>
-        </td>
-        <td>
-          <div class="fw-bold">${reg.tipoAtencion}</div>
-          <small class="badge bg-light text-dark border">${reg.tipoCliente}</small>
-        </td>
-        <td>${reg.agente}</td>
-        <td>
-          <div class="small">In: ${reg.horaInicio}</div>
-          <div class="small text-muted">Fin: ${reg.horaFin || '--:--'}</div>
-        </td>
-      </tr>`;
+    const fila = ` <tr> <td class="ps-3"> <strong>${reg.fecha}</strong><br> <small class="text-muted">${reg.idOatc}</small> </td> <td> <div class="fw-bold">${reg.tipoAtencion}</div> <small class="badge bg-light text-dark border">${reg.tipoCliente}</small> </td> <td>${reg.agente}</td> <td> <div class="small">In: ${reg.horaInicio}</div> <div class="small text-muted">Fin: ${reg.horaFin || '--:--'}</div> </td> </tr>`;
     cuerpo.insertAdjacentHTML('beforeend', fila);
   });
 }
@@ -6011,130 +5930,7 @@ function abrirModalFidelizacion() {
 
   let modalElem = document.getElementById('modalFidelizacion');
   if (!modalElem) {
-    const html = `
-      <style>
-        /* --- ESTILOS ADAPTATIVOS DE FIDELIZACIÓN (TEMA CLARO Y OSCURO) --- */
-        
-        /* Tema Claro (Por Defecto) */
-        #modalFidelizacion .modal-body {
-          background-color: #f8f9fa !important;
-          color: #212529 !important;
-        }
-        #modalFidelizacion .modal-content {
-          background-color: #ffffff !important;
-        }
-        #modalFidelizacion .header-filter-box,
-        #modalFidelizacion .table-container-box {
-          background-color: #ffffff !important;
-          border-color: #dee2e6 !important;
-        }
-        #modalFidelizacion table {
-          color: #212529 !important;
-        }
-        #modalFidelizacion table td {
-          color: #495057 !important;
-          background-color: transparent !important;
-        }
-        #modalFidelizacion .search-helper-text {
-          color: #6c757d !important;
-        }
-        #modalFidelizacion .dataTables_info,
-        #modalFidelizacion .dataTables_length,
-        #modalFidelizacion .dataTables_filter {
-          color: #495057 !important;
-        }
-        #modalFidelizacion .dataTables_filter input {
-          border: 1px solid #ced4da !important;
-          background-color: #ffffff !important;
-          color: #212529 !important;
-          border-radius: 6px;
-          padding: 4px 8px;
-          outline: none;
-        }
-        #modalFidelizacion .dataTables_paginate .paginate_button {
-          color: #212529 !important;
-        }
-
-        /* Tema Oscuro (Cuando body.dark-theme está activo) */
-        body.dark-theme #modalFidelizacion .modal-body {
-          background-color: #121212 !important;
-          color: #f8f9fa !important;
-        }
-        body.dark-theme #modalFidelizacion .modal-content {
-          background-color: #1e1e1e !important;
-          border: 1px solid #333333 !important;
-        }
-        body.dark-theme #modalFidelizacion .header-filter-box,
-        body.dark-theme #modalFidelizacion .table-container-box {
-          background-color: #1a1a1a !important;
-          border-color: #2d2d2d !important;
-        }
-        body.dark-theme #modalFidelizacion table {
-          color: #ffffff !important;
-        }
-        body.dark-theme #modalFidelizacion table td {
-          color: #e2e8f0 !important;
-          border-bottom: 1px solid #2d2d2d !important;
-          background-color: transparent !important;
-        }
-        body.dark-theme #modalFidelizacion .search-helper-text {
-          color: #a0aec0 !important;
-        }
-        body.dark-theme #modalFidelizacion .dataTables_info,
-        body.dark-theme #modalFidelizacion .dataTables_length,
-        body.dark-theme #modalFidelizacion .dataTables_filter {
-          color: #e2e8f0 !important;
-        }
-        body.dark-theme #modalFidelizacion .dataTables_filter input {
-          border: 1px solid #444444 !important;
-          background-color: #2d2d2d !important;
-          color: #ffffff !important;
-          border-radius: 6px;
-          padding: 4px 8px;
-          outline: none;
-        }
-        body.dark-theme #modalFidelizacion .dataTables_paginate .paginate_button {
-          color: #ffffff !important;
-        }
-      </style>
-      <div class="modal fade" id="modalFidelizacion" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-          <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
-            <div class="modal-header text-white border-0 py-3 px-4 d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #f77062, #fe5196) !important;">
-              <h5 class="modal-title fw-bold text-uppercase fs-5 m-0" style="letter-spacing: 1px;"><i class="fas fa-heart me-2 text-warning"></i>Fidelización de Clientes</h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-4">
-              <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded-3 shadow-sm border header-filter-box">
-                <div class="btn-group shadow-sm" id="grupoFiltrosFidelizacion">
-                  <button class="btn btn-outline-secondary active px-4" onclick="filtrarCampana('todas', this)" style="font-weight: 600; border-radius: 8px 0 0 8px;">Todos</button>
-                  <button class="btn btn-outline-primary px-4" onclick="filtrarCampana('Células Madre', this)" style="font-weight: 600;">C. Células Madre</button>
-                  <button class="btn btn-outline-info px-4" onclick="filtrarCampana('Kerastase', this)" style="font-weight: 600; border-radius: 0 8px 8px 0;">C. Kerastase</button>
-                </div>
-              </div>
-              <div class="rounded-4 shadow-sm p-3 border table-container-box">
-                <div class="d-flex justify-content-between align-items-center mb-2 search-helper-container">
-                  <div></div>
-                  <small class="fw-bold search-helper-text" style="font-size: 0.85rem;"><i class="fas fa-search me-1 text-primary"></i>Búsqueda habilitada por Nombre, DNI o Celular</small>
-                </div>
-                <table id="tablaFidelizacion" class="table table-hover align-middle w-100">
-                  <thead>
-                    <tr class="table-dark">
-                      <th style="border-radius: 8px 0 0 8px;">DNI</th>
-                      <th>Cliente</th>
-                      <th>Celular</th>
-                      <th>Fecha Atención</th>
-                      <th class="d-none">Timestamp</th> 
-                      <th class="text-center" style="border-radius: 0 8px 8px 0;">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody id="bodyFidelizacion"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`;
+    const html = ` <style> /* --- ESTILOS ADAPTATIVOS DE FIDELIZACIÓN (TEMA CLARO Y OSCURO) --- */ /* Tema Claro (Por Defecto) */ #modalFidelizacion .modal-body { background-color: #f8f9fa !important; color: #212529 !important; } #modalFidelizacion .modal-content { background-color: #ffffff !important; } #modalFidelizacion .header-filter-box, #modalFidelizacion .table-container-box { background-color: #ffffff !important; border-color: #dee2e6 !important; } #modalFidelizacion table { color: #212529 !important; } #modalFidelizacion table td { color: #495057 !important; background-color: transparent !important; } #modalFidelizacion .search-helper-text { color: #6c757d !important; } #modalFidelizacion .dataTables_info, #modalFidelizacion .dataTables_length, #modalFidelizacion .dataTables_filter { color: #495057 !important; } #modalFidelizacion .dataTables_filter input { border: 1px solid #ced4da !important; background-color: #ffffff !important; color: #212529 !important; border-radius: 6px; padding: 4px 8px; outline: none; } #modalFidelizacion .dataTables_paginate .paginate_button { color: #212529 !important; } /* Tema Oscuro (Cuando body.dark-theme está activo) */ body.dark-theme #modalFidelizacion .modal-body { background-color: #121212 !important; color: #f8f9fa !important; } body.dark-theme #modalFidelizacion .modal-content { background-color: #1e1e1e !important; border: 1px solid #333333 !important; } body.dark-theme #modalFidelizacion .header-filter-box, body.dark-theme #modalFidelizacion .table-container-box { background-color: #1a1a1a !important; border-color: #2d2d2d !important; } body.dark-theme #modalFidelizacion table { color: #ffffff !important; } body.dark-theme #modalFidelizacion table td { color: #e2e8f0 !important; border-bottom: 1px solid #2d2d2d !important; background-color: transparent !important; } body.dark-theme #modalFidelizacion .search-helper-text { color: #a0aec0 !important; } body.dark-theme #modalFidelizacion .dataTables_info, body.dark-theme #modalFidelizacion .dataTables_length, body.dark-theme #modalFidelizacion .dataTables_filter { color: #e2e8f0 !important; } body.dark-theme #modalFidelizacion .dataTables_filter input { border: 1px solid #444444 !important; background-color: #2d2d2d !important; color: #ffffff !important; border-radius: 6px; padding: 4px 8px; outline: none; } body.dark-theme #modalFidelizacion .dataTables_paginate .paginate_button { color: #ffffff !important; } </style> <div class="modal fade" id="modalFidelizacion" tabindex="-1" aria-hidden="true"> <div class="modal-dialog modal-xl modal-dialog-centered"> <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg"> <div class="modal-header text-white border-0 py-3 px-4 d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #f77062, #fe5196) !important;"> <h5 class="modal-title fw-bold text-uppercase fs-5 m-0" style="letter-spacing: 1px;"><i class="fas fa-heart me-2 text-warning"></i>Fidelización de Clientes</h5> <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button> </div> <div class="modal-body p-4"> <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded-3 shadow-sm border header-filter-box"> <div class="btn-group shadow-sm" id="grupoFiltrosFidelizacion"> <button class="btn btn-outline-secondary active px-4" onclick="filtrarCampana('todas', this)" style="font-weight: 600; border-radius: 8px 0 0 8px;">Todos</button> <button class="btn btn-outline-primary px-4" onclick="filtrarCampana('Células Madre', this)" style="font-weight: 600;">C. Células Madre</button> <button class="btn btn-outline-info px-4" onclick="filtrarCampana('Kerastase', this)" style="font-weight: 600; border-radius: 0 8px 8px 0;">C. Kerastase</button> </div> </div> <div class="rounded-4 shadow-sm p-3 border table-container-box"> <div class="d-flex justify-content-between align-items-center mb-2 search-helper-container"> <div></div> <small class="fw-bold search-helper-text" style="font-size: 0.85rem;"><i class="fas fa-search me-1 text-primary"></i>Búsqueda habilitada por Nombre, DNI o Celular</small> </div> <table id="tablaFidelizacion" class="table table-hover align-middle w-100"> <thead> <tr class="table-dark"> <th style="border-radius: 8px 0 0 8px;">DNI</th> <th>Cliente</th> <th>Celular</th> <th>Fecha Atención</th> <th class="d-none">Timestamp</th> <th class="text-center" style="border-radius: 0 8px 8px 0;">Acciones</th> </tr> </thead> <tbody id="bodyFidelizacion"></tbody> </table> </div> </div> </div> </div> </div>`;
     document.body.insertAdjacentHTML('beforeend', html);
   }
 
@@ -6168,22 +5964,9 @@ function renderizarTablaFidelizacion(lista) {
     const nombreCompleto = `${c.nombre || ''} ${c.apellido || ''}`.trim();
     const nombreEscapado = nombreCompleto.replace(/'/g, "\\'");
 
-    return `
-    <tr>
-      <td>${c.dni || '---'}</td>
-      <td>${nombreCompleto}</td>
-      <td>${c.celular || '---'}</td>
-      <td>${c.ultimaVisitaTexto || '---'}</td>
-      <td class="d-none">${time}</td>
-      <td class="text-center">
-        ${c.esCampana 
-          ? `<span class="badge bg-success">En Campaña</span>` 
-          : `<button class="btn btn-sm btn-outline-dark" onclick="verHistorialVisitas('${c.dni}', '${nombreEscapado}')">
+    return ` <tr> <td>${c.dni || '---'}</td> <td>${nombreCompleto}</td> <td>${c.celular || '---'}</td> <td>${c.ultimaVisitaTexto || '---'}</td> <td class="d-none">${time}</td> <td class="text-center"> ${c.esCampana ? `<span class="badge bg-success">En Campaña</span>` : `<button class="btn btn-sm btn-outline-dark" onclick="verHistorialVisitas('${c.dni}', '${nombreEscapado}')">
                <i class="fas fa-eye"></i>
-             </button>`
-        }
-      </td>
-    </tr>`;
+             </button>` } </td> </tr>`;
   }).join("");
 
   // Inicialización correcta de DataTable
@@ -6234,19 +6017,7 @@ function verHistorialVisitas(dni, nombre) {
         return;
       }
 
-      let tablaHtml = `
-        <div class="table-responsive" style="max-height: 400px;">
-          <table class="table table-sm table-striped table-bordered mt-3" style="font-size: 0.85rem;">
-            <thead class="table-dark text-center">
-              <tr>
-                <th><input type="checkbox" onclick="toggleAllVisitas(this)"></th>
-                <th>Fecha</th>
-                <th>Atención</th>
-                <th>Agente</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${visitas.map(v => `
+      let tablaHtml = ` <div class="table-responsive" style="max-height: 400px;"> <table class="table table-sm table-striped table-bordered mt-3" style="font-size: 0.85rem;"> <thead class="table-dark text-center"> <tr> <th><input type="checkbox" onclick="toggleAllVisitas(this)"></th> <th>Fecha</th> <th>Atención</th> <th>Agente</th> </tr> </thead> <tbody> ${visitas.map(v => `
                 <tr>
                   <td class="text-center">
                     <input type="checkbox" class="check-visita" 
@@ -6257,10 +6028,7 @@ function verHistorialVisitas(dni, nombre) {
                   <td>${v.atencion}</td>
                   <td>${v.agente}</td>
                 </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>`;
+              `).join('')} </tbody> </table> </div>`;
 
       Swal.fire({
         title: `<i class="fas fa-history"></i> Historial: ${nombre}`,
@@ -6544,19 +6312,7 @@ function renderizarTablaReporteOATC(lista) {
     // Símbolo o correlativo
     const ordText = o.correlativo ? `${o.correlativo} (${displayDemanda})` : `${o.hora} (${displayDemanda})`;
 
-    return `
-      <tr>
-        <td>${o.fechaTexto}</td>
-        <td>${o.hora}</td>
-        <td class="fw-bold">${ordText}</td>
-        <td>${o.clienteNombre} <br><small class="text-muted">DNI: ${o.clienteDni}</small></td>
-        <td>${o.clienteCelular}</td>
-        <td><span class="badge bg-light text-dark border">${displayDemanda}</span></td>
-        <td>${o.atencion}</td>
-        <td><span class="fw-medium">${o.agente}</span></td>
-        <td>${badgeEstado}</td>
-      </tr>
-    `;
+    return ` <tr> <td>${o.fechaTexto}</td> <td>${o.hora}</td> <td class="fw-bold">${ordText}</td> <td>${o.clienteNombre} <br><small class="text-muted">DNI: ${o.clienteDni}</small></td> <td>${o.clienteCelular}</td> <td><span class="badge bg-light text-dark border">${displayDemanda}</span></td> <td>${o.atencion}</td> <td><span class="fw-medium">${o.agente}</span></td> <td>${badgeEstado}</td> </tr> `;
   }).join("");
 
   $('#tablaReporteDatosOATC').DataTable({
@@ -6589,28 +6345,7 @@ function renderizarCarrito() {
     return;
   }
 
-  tbody.innerHTML = CARRITO.map((item, index) => `
-    <tr class="align-middle">
-      <td class="py-2">
-        <div class="fw-bold" style="font-size: 0.85rem; line-height: 1.1;">${item.nombre}</div>
-        <div class="text-muted" style="font-size: 0.7rem;">${item.marca} | ${item.linea}</div>
-      </td>
-      <td style="width: 120px;">
-        <div class="input-group input-group-sm">
-          <span class="input-group-text p-1" style="font-size: 0.7rem;">S/</span>
-          <input type="number" class="form-control form-control-sm fw-bold p-1 text-end" 
-                 value="${item.precio.toFixed(2)}" 
-                 step="0.50"
-                 onchange="window.actualizarPrecioCarrito(${index}, this.value)">
-        </div>
-      </td>
-      <td class="text-center">
-        <button class="btn btn-sm btn-outline-danger border-0" onclick="eliminarDelCarrito(${index})">
-          <i class="fas fa-times"></i>
-        </button>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = CARRITO.map((item, index) => ` <tr class="align-middle"> <td class="py-2"> <div class="fw-bold" style="font-size: 0.85rem; line-height: 1.1;">${item.nombre}</div> <div class="text-muted" style="font-size: 0.7rem;">${item.marca} | ${item.linea}</div> </td> <td style="width: 120px;"> <div class="input-group input-group-sm"> <span class="input-group-text p-1" style="font-size: 0.7rem;">S/</span> <input type="number" class="form-control form-control-sm fw-bold p-1 text-end" value="${item.precio.toFixed(2)}" step="0.50" onchange="window.actualizarPrecioCarrito(${index}, this.value)"> </div> </td> <td class="text-center"> <button class="btn btn-sm btn-outline-danger border-0" onclick="eliminarDelCarrito(${index})"> <i class="fas fa-times"></i> </button> </td> </tr> `).join('');
 }
 /**
  * Permite editar el precio directamente en la tabla.
@@ -6665,19 +6400,7 @@ function filtrarProductos() {
     const precioVenta = parseFloat(p.precio) || 0;
     const precioMin = parseFloat(p.precioMinimo) || 0;
 
-    return `
-      <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2" 
-              onclick="agregarAlCarrito('${p.nombre.replace(/'/g, "\\'")}', ${precioVenta}, '${p.marca}', '${p.linea}')">
-        <div class="text-start">
-          <div class="fw-bold" style="font-size: 0.9rem;">${p.nombre}</div>
-          <small class="text-muted">${p.marca} - ${p.linea}</small>
-        </div>
-        <div class="text-end">
-          <span class="badge bg-success rounded-pill d-block mb-1">S/ ${precioVenta.toFixed(2)}</span>
-          <span class="badge bg-info text-dark rounded-pill" style="font-size: 0.7rem;">Mín: S/ ${precioMin.toFixed(2)}</span>
-        </div>
-      </button>
-    `;
+    return ` <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2" onclick="agregarAlCarrito('${p.nombre.replace(/'/g, "\\'")}', ${precioVenta}, '${p.marca}', '${p.linea}')"> <div class="text-start"> <div class="fw-bold" style="font-size: 0.9rem;">${p.nombre}</div> <small class="text-muted">${p.marca} - ${p.linea}</small> </div> <div class="text-end"> <span class="badge bg-success rounded-pill d-block mb-1">S/ ${precioVenta.toFixed(2)}</span> <span class="badge bg-info text-dark rounded-pill" style="font-size: 0.7rem;">Mín: S/ ${precioMin.toFixed(2)}</span> </div> </button> `;
   }).join('');
 }
 
@@ -6708,17 +6431,7 @@ async function abrirModalVentaCaja(datosOATC) {
   modalElem.dataset.cliente = datosOATC.cliente;
   modalElem.dataset.agente = datosOATC.agente;
 
-  contenedorInfo.innerHTML = `
-    <div class="row align-items-center">
-      <div class="col-8">
-        <div class="small text-uppercase text-muted" style="font-size: 0.7rem;">Cliente</div>
-        <div class="fw-bold text-truncate">${datosOATC.cliente}</div>
-      </div>
-      <div class="col-4 text-end border-start">
-        <div class="small text-uppercase text-muted" style="font-size: 0.7rem;">OATC</div>
-        <div class="fw-bold text-success">#${datosOATC.id}</div>
-      </div>
-    </div>`;
+  contenedorInfo.innerHTML = ` <div class="row align-items-center"> <div class="col-8"> <div class="small text-uppercase text-muted" style="font-size: 0.7rem;">Cliente</div> <div class="fw-bold text-truncate">${datosOATC.cliente}</div> </div> <div class="col-4 text-end border-start"> <div class="small text-uppercase text-muted" style="font-size: 0.7rem;">OATC</div> <div class="fw-bold text-success">#${datosOATC.id}</div> </div> </div>`;
 
   if (PRODUCTOS_BBDD.length === 0) {
     if (window.mostrarSpinner) window.mostrarSpinner();
@@ -7359,24 +7072,7 @@ async function cargarCitasEnTablaJS() {
         } else {
             citas.forEach((cita) => {
                 // Formateo visual
-                tbody.innerHTML += `
-                <tr>
-                  <td>
-                      <div class="small fw-bold">${cita.fecha}</div>
-                      <div class="small text-muted">${cita.hora}</div>
-                  </td>
-                  <td>${cita.cliente}</td>
-                  <td><span class="badge bg-info text-dark">${cita.servicio}</span></td>
-                  <td>${cita.agente || 'Sin Asignar'}</td>
-                  <td class="text-center">
-                      <button class="btn btn-sm btn-outline-primary" onclick="window.editarCitaJS(${cita.id})">
-                          <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-sm btn-outline-danger" onclick="window.eliminarCitaJS(${cita.id})">
-                          <i class="fas fa-trash"></i>
-                      </button>
-                  </td>
-                </tr>`;
+                tbody.innerHTML += ` <tr> <td> <div class="small fw-bold">${cita.fecha}</div> <div class="small text-muted">${cita.hora}</div> </td> <td>${cita.cliente}</td> <td><span class="badge bg-info text-dark">${cita.servicio}</span></td> <td>${cita.agente || 'Sin Asignar'}</td> <td class="text-center"> <button class="btn btn-sm btn-outline-primary" onclick="window.editarCitaJS(${cita.id})"> <i class="fas fa-edit"></i> </button> <button class="btn btn-sm btn-outline-danger" onclick="window.eliminarCitaJS(${cita.id})"> <i class="fas fa-trash"></i> </button> </td> </tr>`;
             });
         }
         

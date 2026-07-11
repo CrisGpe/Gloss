@@ -502,27 +502,10 @@ function mostrarDetalleCitas(citas, fechaIso) {
   // Convertimos yyyy-mm-dd a dd/mm/yyyy para el título
   const fechaTitulo = fechaIso.split('-').reverse().join('/');
   
-  let tablaHtml = `
-    <div class="table-responsive">
-      <table class="table table-sm table-striped mt-2" style="font-size: 13px;">
-        <thead>
-          <tr class="table-dark">
-            <th>Hora</th>
-            <th>Agente</th> <th>Cliente</th>
-            <th>Servicio</th>
-          </tr>
-        </thead>
-        <tbody>
-  `;
+  let tablaHtml = ` <div class="table-responsive"> <table class="table table-sm table-striped mt-2" style="font-size: 13px;"> <thead> <tr class="table-dark"> <th>Hora</th> <th>Agente</th> <th>Cliente</th> <th>Servicio</th> </tr> </thead> <tbody> `;
 
   citas.forEach(c => {
-    tablaHtml += `
-      <tr>
-        <td><strong>${c.hora}</strong></td>
-        <td>${c.agente || 'No asignado'}</td> <td>${c.cliente}</td>
-        <td><span class="badge bg-light text-dark border">${c.servicio}</span></td>
-      </tr>
-    `;
+    tablaHtml += ` <tr> <td><strong>${c.hora}</strong></td> <td>${c.agente || 'No asignado'}</td> <td>${c.cliente}</td> <td><span class="badge bg-light text-dark border">${c.servicio}</span></td> </tr> `;
   });
 
   tablaHtml += `</tbody></table></div>`;

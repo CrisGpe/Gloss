@@ -48,22 +48,7 @@ function renderizarTablaHistorial(datos, nombre) {
   tablaContenedor.classList.remove('d-none');
 
   datos.forEach(reg => {
-    const fila = `
-      <tr>
-        <td class="ps-3">
-          <strong>${reg.fecha}</strong><br>
-          <small class="text-muted">${reg.idOatc}</small>
-        </td>
-        <td>
-          <div class="fw-bold">${reg.tipoAtencion}</div>
-          <small class="badge bg-light text-dark border">${reg.tipoCliente}</small>
-        </td>
-        <td>${reg.agente}</td>
-        <td>
-          <div class="small">In: ${reg.horaInicio}</div>
-          <div class="small text-muted">Fin: ${reg.horaFin || '--:--'}</div>
-        </td>
-      </tr>`;
+    const fila = ` <tr> <td class="ps-3"> <strong>${reg.fecha}</strong><br> <small class="text-muted">${reg.idOatc}</small> </td> <td> <div class="fw-bold">${reg.tipoAtencion}</div> <small class="badge bg-light text-dark border">${reg.tipoCliente}</small> </td> <td>${reg.agente}</td> <td> <div class="small">In: ${reg.horaInicio}</div> <div class="small text-muted">Fin: ${reg.horaFin || '--:--'}</div> </td> </tr>`;
     cuerpo.insertAdjacentHTML('beforeend', fila);
   });
 }
