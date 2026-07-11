@@ -292,9 +292,9 @@ window.filtroOATCActivo = 'Pendientes';
       // Escuchar cambios en la tabla de OATC (Órdenes)
       channel.on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'ordenes_atc' },
+        { event: '*', schema: 'public', table: 'oatc' },
         (payload) => {
-          console.log("[REALTIME] Cambio detectado en ordenes_atc:", payload);
+          console.log("[REALTIME] Cambio detectado en oatc:", payload);
           // Refrescar vistas si no hay modales que interrumpan
           const modalAbierto = document.querySelector('.modal.show');
           const swalAbierto = document.querySelector('.swal2-container');
@@ -397,7 +397,7 @@ window.filtroOATCActivo = 'Pendientes';
         const fechaHoy = `${yyyy}-${mm}-${dd}`;
         
         const { data, error } = await window.supabaseClient
-          .from('ordenes_atc')
+          .from('oatc')
           .select('correlativo')
           .eq('fecha', fechaHoy)
           .order('correlativo', { ascending: false })
