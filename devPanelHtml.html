@@ -271,29 +271,28 @@
             res.forEach(row => {
                 let rowHTML = '<tr>';
                 columnasTabla.forEach(col => {
-                    let val = row[col];
-                    if (val && typeof val === 'object') val = JSON.stringify(val);
-                    rowHTML += `<td>${val === null ? '<span class="text-muted">null</span>' : val}</td>`;
+                    const val = row[col];
+                    rowHTML += '<td>' + (val === null ? '<span class="text-muted">null</span>' : val) + '</td>';
                 });
 
                 // Botones dinámicos según tabla
                 if (tablaActiva === 'garbage') {
-                    rowHTML += `<td class="text-center">
-                        <button class="btn btn-sm btn-outline-warning" onclick="restaurarFila('${row.id}')">
-                            <i class="fa-solid fa-undo me-1"></i> Restaurar
-                        </button>
-                    </td>`;
+                    rowHTML += '<td class="text-center">' +
+                        '<button class="btn btn-sm btn-outline-warning" onclick="restaurarFila(\'' + row.id + '\')">' +
+                            '<i class="fa-solid fa-undo me-1"></i> Restaurar' +
+                        '</button>' +
+                    '</td>';
                 } else {
-                    rowHTML += `<td class="text-center">
-                        <div class="btn-group">
-                            <button class="btn btn-sm btn-outline-info" onclick='abrirModalEditar(${JSON.stringify(row)})'>
-                                <i class="fa-solid fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="eliminarFilaSecreta('${row.id}')">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>`;
+                    rowHTML += '<td class="text-center">' +
+                        '<div class="btn-group">' +
+                            '<button class="btn btn-sm btn-outline-info" onclick=\'abrirModalEditar(' + JSON.stringify(row) + ')\'>' +
+                                '<i class="fa-solid fa-edit"></i>' +
+                            '</button>' +
+                            '<button class="btn btn-sm btn-outline-danger" onclick="eliminarFilaSecreta(\'' + row.id + '\')">' +
+                                '<i class="fa-solid fa-trash"></i>' +
+                            '</button>' +
+                        '</div>' +
+                    '</td>';
                 }
                 rowHTML += '</tr>';
                 body.innerHTML += rowHTML;
@@ -310,12 +309,10 @@
             columnasTabla.forEach(col => {
                 if (col === 'id' || col === 'created_at' || col === 'ficha_id' || col === 'correlativo') return;
                 
-                body.innerHTML += `
-                    <div class="mb-3">
-                        <label class="form-label">${col}</label>
-                        <input type="text" class="form-control bg-dark text-white border-secondary" id="form_${col}">
-                    </div>
-                `;
+                body.innerHTML += '<div class="mb-3">' +
+                    '<label class="form-label">' + col + '</label>' +
+                    '<input type="text" class="form-control bg-dark text-white border-secondary" id="form_' + col + '">' +
+                '</div>';
             });
 
             const modal = new bootstrap.Modal(document.getElementById('modalEdicion'));
@@ -332,12 +329,10 @@
             columnasTabla.forEach(col => {
                 if (col === 'id' || col === 'created_at' || col === 'ficha_id' || col === 'correlativo') return;
                 
-                body.innerHTML += `
-                    <div class="mb-3">
-                        <label class="form-label">${col}</label>
-                        <input type="text" class="form-control bg-dark text-white border-secondary" id="form_${col}" value="${row[col] || ''}">
-                    </div>
-                `;
+                body.innerHTML += '<div class="mb-3">' +
+                    '<label class="form-label">' + col + '</label>' +
+                    '<input type="text" class="form-control bg-dark text-white border-secondary" id="form_' + col + '" value="' + (row[col] || '') + '">' +
+                '</div>';
             });
 
             const modal = new bootstrap.Modal(document.getElementById('modalEdicion'));
