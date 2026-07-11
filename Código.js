@@ -1,8 +1,8 @@
 function doGet(e) {
   console.log("SERVER DEBUG: Iniciando enrutamiento de dashboards...");
   
-  let page = 'login';
-  let title = 'Antigravity Salon - Login Seguro';
+  let page = 'recepcionDashboard'; // Renderizamos el SPA principal directamente
+  let title = 'Antigravity Salon - Dashboard SPA';
   
   const param = e && e.parameter && e.parameter.p ? e.parameter.p.toLowerCase() : '';
   const token = e && e.parameter && e.parameter.token ? e.parameter.token : '';
