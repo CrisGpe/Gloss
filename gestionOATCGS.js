@@ -50,24 +50,7 @@ function obtenerOCrearClienteId(nombreClienteOATC) {
   return insertado[0].id;
 }
 
-function obtenerSiguienteCorrelativoHoy() {
-  const fechaHoy = Utilities.formatDate(new Date(), "America/Lima", "yyyy-MM-dd");
-  const oatcs = Supabase.select("oatc", `fecha=eq.${fechaHoy}&select=correlativo&order=correlativo.desc&limit=1`);
-  if (oatcs && oatcs.length > 0) {
-    const maxCorr = parseInt(oatcs[0].correlativo) || 0;
-    return maxCorr + 1;
-  }
-  return 1;
-}
 
-function obtenerNumeroLastOATC() {
-  try {
-    return obtenerSiguienteCorrelativoHoy();
-  } catch (e) {
-    console.error("Error en obtenerNumeroLastOATC: " + e.message);
-    return 1;
-  }
-}
 
 // --- TRANSICIONES DE ESTADOS ---
 
@@ -531,21 +514,5 @@ function actualizarAtencionOATC(idOATC, nuevoTipoAtencion) {
   } catch (e) {
     console.error("Error al actualizar atención:", e);
     return `Error: ${e.message}`;
-  }
-}
-
-function dispararSondeoSilencioso() {
-  try {
-    const agentes = obtenerFichasRegistradas();
-    const oatc = obtenerOATCPendientes();
-    return {
-      success: true,
-      agentes: agentes,
-      oatc: oatc,
-      timestamp: new Date().getTime()
-    };
-  } catch (e) {
-    console.error("Error en sondeo silencioso: " + e.message);
-    return { success: false, error: e.message };
   }
 }

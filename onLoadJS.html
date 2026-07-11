@@ -265,8 +265,10 @@ window.filtroOATCActivo = 'Pendientes';
           window.filtrarViewOATCPendientes();
         }
         
-        // Activación del ciclo de vida de actualización automática
-        iniciarSondeoDeDatos(); 
+        // Activación de Supabase Realtime en reemplazo del Polling antiguo
+        if (typeof iniciarSuscripcionesRealtime === 'function') {
+            iniciarSuscripcionesRealtime();
+        } 
         
         // Liberación de la interfaz
         ocultarCargando();
@@ -274,64 +276,60 @@ window.filtroOATCActivo = 'Pendientes';
     }
 
     /**
-     * --- F. SISTEMA DE ACTUALIZACIÓN EN TIEMPO REAL (POLLING) ---
-     * Corregido para inyectar datos y forzar renderizado sin nuevas peticiones.
+     * --- F. SISTEMA DE ACTUALIZACIÓN EN TIEMPO REAL (SUPABASE REALTIME) ---
+     * Escucha cambios en las tablas de Supabase y recarga las vistas automáticamente.
      */
-    function iniciarSondeoDeDatos() {
-      console.log(`[SISTEMA] Polling activado: cada ${INTERVALO_SONDEO / 1000}s`);
+    function iniciarSuscripcionesRealtime() {
+      if (!window.supabaseClient) {
+        console.warn("[REALTIME] Cliente Supabase no inicializado. Cancelando realtime.");
+        return;
+      }
       
-      setInterval(function() {
-        // 1. Verificación de UI: No interrumpir si el usuario tiene modales abiertos
-        const modalAbierto = document.querySelector('.modal.show');
-        const swalAbierto = document.querySelector('.swal2-container');
+      console.log("[REALTIME] Inicializando WebSockets de Supabase...");
 
-        if (!modalAbierto && !swalAbierto) {
-          console.log("[POLLING] Ejecutando sincronización silenciosa...");
+      const channel = window.supabaseClient.channel('realtime-dashboard');
+
+      // Escuchar cambios en la tabla de OATC (Órdenes)
+      channel.on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'ordenes_atc' },
+        (payload) => {
+          console.log("[REALTIME] Cambio detectado en ordenes_atc:", payload);
+          // Refrescar vistas si no hay modales que interrumpan
+          const modalAbierto = document.querySelector('.modal.show');
+          const swalAbierto = document.querySelector('.swal2-container');
           
-          google.script.run
-            .withSuccessHandler(res => {
-                if (res && res.success) {
-                  // A. Actualizar Agentes (Disponibilidad y Turnos)
-                  if (window.renderizarTablaAgentes && res.agentes) {
-                    // Usamos la función de renderizado directo en lugar de la de filtrado
-                    window.renderizarTablaAgentes(res.agentes);
-                  } else if (window.filtrarView) {
-                    // Fallback: refresco silencioso
-                    window.filtrarView(true); 
-                  }
-                  
-                  // B. Actualizar Órdenes (OATC)
-                  if (window.filtroOATCActivo === 'Pendientes' && res.oatc) {
-                    if (window.renderizarTablaOATC) {
-                      window.renderizarTablaOATC(res.oatc); // Inyectamos datos directo al motor
-                    } else if (window.filtrarViewOATCPendientes) {
-                      window.filtrarViewOATCPendientes(true);
-                    }
-                  }
-                  
-                  console.log("[POLLING] Tablas sincronizadas.");
-                }
-              })
-            .dispararSondeoSilencioso(); 
-        }
-
-        // 2. Sincronización proactiva del ID de Orden
-        google.script.run
-          .withSuccessHandler(id => {
-            const campoId = document.getElementById('floatingInputNumeroOATC');
-            const clienteInput = document.getElementById('clientesDatalistOATC');
-            
-            // Solo actualizamos si el campo está vacío o el usuario no está escribiendo
-            if (campoId && id && id !== "Error" && (!clienteInput || clienteInput.value === "")) {
-                if (campoId.value !== id) {
-                  campoId.value = id;
-                  console.log("[POLLING] Nuevo ID detectado: " + id);
-                }
+          if (!modalAbierto && !swalAbierto) {
+            if (window.filtroOATCActivo === 'Pendientes' && typeof window.filtrarViewOATCPendientes === 'function') {
+              window.filtrarViewOATCPendientes(true);
             }
-          })
-          .obtenerNumeroLastOATC(); 
+          }
+        }
+      );
 
-      }, INTERVALO_SONDEO); 
+      // Escuchar cambios en la tabla de Fichas (Agentes)
+      channel.on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'fichas' },
+        (payload) => {
+          console.log("[REALTIME] Cambio detectado en fichas (agentes):", payload);
+          const modalAbierto = document.querySelector('.modal.show');
+          const swalAbierto = document.querySelector('.swal2-container');
+          
+          if (!modalAbierto && !swalAbierto) {
+            if (typeof window.filtrarView === 'function') {
+              window.filtrarView(true);
+            }
+          }
+        }
+      );
+
+      // Iniciar la conexión
+      channel.subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log("[REALTIME] ✅ Conectado exitosamente al canal realtime-dashboard.");
+        }
+      });
     }
 
     /**
@@ -384,8 +382,35 @@ window.filtroOATCActivo = 'Pendientes';
     }
 
     // --- MANEJO DE IDENTIFICADORES DE ORDEN ---
-    function obtenerSiguienteNumeroOATC() { 
-      google.script.run.withSuccessHandler(colocarSigNumOATC).obtenerNumeroLastOATC(); 
+    async function obtenerSiguienteNumeroOATC() {
+      if (!window.supabaseClient) {
+        // Fallback de seguridad si aún no cargó Supabase
+        google.script.run.withSuccessHandler(colocarSigNumOATC).obtenerNumeroLastOATC();
+        return;
+      }
+      
+      try {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const fechaHoy = `${yyyy}-${mm}-${dd}`;
+        
+        const { data, error } = await window.supabaseClient
+          .from('ordenes_atc')
+          .select('correlativo')
+          .eq('fecha', fechaHoy)
+          .order('correlativo', { ascending: false })
+          .limit(1);
+          
+        if (error) throw error;
+        
+        const maxCorr = (data && data.length > 0) ? (parseInt(data[0].correlativo) || 0) : 0;
+        colocarSigNumOATC(maxCorr + 1);
+      } catch (err) {
+        console.error("Error al obtener correlativo de Supabase JS, usando backend:", err);
+        google.script.run.withSuccessHandler(colocarSigNumOATC).obtenerNumeroLastOATC();
+      }
     }
     
     function colocarSigNumOATC(n) { 
